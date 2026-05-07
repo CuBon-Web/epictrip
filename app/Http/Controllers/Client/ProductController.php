@@ -70,19 +70,25 @@ class ProductController extends Controller
         }
 
         if ($request->filled('duration_range')) {
-            $durationExpr = "CAST(REGEXP_SUBSTR(hang_muc, '[0-9]+') AS UNSIGNED)";
+            $durationExpr = "CAST(hang_muc AS UNSIGNED)";
             if ($request->duration_range === '1-3') {
                 $product = $product->whereRaw("$durationExpr BETWEEN 1 AND 3");
-            } elseif ($request->duration_range === '3-5') {
-                $product = $product->whereRaw("$durationExpr BETWEEN 3 AND 5");
-            } elseif ($request->duration_range === '5-7') {
-                $product = $product->whereRaw("$durationExpr BETWEEN 5 AND 7");
-            } elseif ($request->duration_range === '7-10') {
-                $product = $product->whereRaw("$durationExpr BETWEEN 7 AND 10");
-            } elseif ($request->duration_range === '10+') {
-                $product = $product->whereRaw("$durationExpr > 10");
-            } elseif ($request->duration_range === '30+') {
-                $product = $product->whereRaw("$durationExpr > 30");
+            } elseif ($request->duration_range === '4-7') {
+                $product = $product->whereRaw("$durationExpr BETWEEN 4 AND 7");
+            } elseif ($request->duration_range === '8-11') {
+                $product = $product->whereRaw("$durationExpr BETWEEN 8 AND 11");
+            } elseif ($request->duration_range === '12-15') {
+                $product = $product->whereRaw("$durationExpr BETWEEN 12 AND 15");
+            } elseif ($request->duration_range === '16-20') {
+                $product = $product->whereRaw("$durationExpr BETWEEN 16 AND 20");
+            } elseif ($request->duration_range === '21-23') {
+                $product = $product->whereRaw("$durationExpr BETWEEN 21 AND 23");
+            } elseif ($request->duration_range === '24-27') {
+                $product = $product->whereRaw("$durationExpr BETWEEN 24 AND 27");
+            } elseif ($request->duration_range === '28-31') {
+                $product = $product->whereRaw("$durationExpr BETWEEN 28 AND 31");
+            } elseif ($request->duration_range === '32+') {
+                $product = $product->whereRaw("$durationExpr >= 32");
             }
         }
 
@@ -352,19 +358,25 @@ class ProductController extends Controller
             $product = $product->where('type_two_slug',$request->typetwo);
         }
         if($request->duration_range){
-            $durationExpr = "CAST(REGEXP_SUBSTR(hang_muc, '[0-9]+') AS UNSIGNED)";
+            $durationExpr = "CAST(hang_muc AS UNSIGNED)";
             if($request->duration_range === '1-3'){
                 $product = $product->whereRaw("$durationExpr BETWEEN 1 AND 3");
-            }elseif($request->duration_range === '3-5'){
-                $product = $product->whereRaw("$durationExpr BETWEEN 3 AND 5");
-            }elseif($request->duration_range === '5-7'){
-                $product = $product->whereRaw("$durationExpr BETWEEN 5 AND 7");
-            }elseif($request->duration_range === '7-10'){
-                $product = $product->whereRaw("$durationExpr BETWEEN 7 AND 10");
-            }elseif($request->duration_range === '10+'){
-                $product = $product->whereRaw("$durationExpr > 10");
-            }elseif($request->duration_range === '30+'){
-                $product = $product->whereRaw("$durationExpr > 30");
+            }elseif($request->duration_range === '4-7'){
+                $product = $product->whereRaw("$durationExpr BETWEEN 4 AND 7");
+            }elseif($request->duration_range === '8-11'){
+                $product = $product->whereRaw("$durationExpr BETWEEN 8 AND 11");
+            }elseif($request->duration_range === '12-15'){
+                $product = $product->whereRaw("$durationExpr BETWEEN 12 AND 15");
+            }elseif($request->duration_range === '16-20'){
+                $product = $product->whereRaw("$durationExpr BETWEEN 16 AND 20");
+            }elseif($request->duration_range === '21-23'){
+                $product = $product->whereRaw("$durationExpr BETWEEN 21 AND 23");
+            }elseif($request->duration_range === '24-27'){
+                $product = $product->whereRaw("$durationExpr BETWEEN 24 AND 27");
+            }elseif($request->duration_range === '28-31'){
+                $product = $product->whereRaw("$durationExpr BETWEEN 28 AND 31");
+            }elseif($request->duration_range === '32+'){
+                $product = $product->whereRaw("$durationExpr >= 32");
             }
         }
 
