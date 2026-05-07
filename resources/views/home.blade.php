@@ -563,7 +563,7 @@
                                     @if ($media['type'] === 'youtube')
                                         <div class="trv-yt-wrap">
                                             <iframe class="trv-yt-frame"
-                                                src="https://www.youtube-nocookie.com/embed/{{ $media['youtubeId'] }}?{{ $ytEmbedParams }}"
+                                                src="https://www.youtube.com/embed/{{ $media['youtubeId'] }}?{{ $ytEmbedParams }}"
                                                 title="{{ $sTitle ?: ($setting->company ?? 'Banner') }}"
                                                 frameborder="0"
                                                 allow="autoplay; encrypted-media; picture-in-picture"
