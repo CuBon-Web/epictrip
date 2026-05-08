@@ -7,7 +7,7 @@
             <h4 class="card-title" >Từ khóa</h4>
             <!-- <vs-button type="gradient" style="float:right;" @click="popupActivo=true">Thêm từ khóa</vs-button> -->
             <p class="card-description">Thêm mới hoặc sửa từ khóa</p>
-            <!-- <vs-button color="success" type="filled"  style="float:right;" @click="editLanguageStaticByLang">Lưu</vs-button> -->
+            <vs-button color="success" type="filled"  style="float:right;" @click="editLanguageStaticByLang">Lưu</vs-button>
             <vs-input icon="search" placeholder="Search" v-model="keyword" @keyup="searchKey" />
             <vs-table stripe :data="list" max-items="10" pagination>
               <template slot="thead">

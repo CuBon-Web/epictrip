@@ -321755,6 +321755,16 @@ var render = function() {
                   _vm._v("Thêm mới hoặc sửa từ khóa")
                 ]),
                 _vm._v(" "),
+                _c(
+                  "vs-button",
+                  {
+                    staticStyle: { float: "right" },
+                    attrs: { color: "success", type: "filled" },
+                    on: { click: _vm.editLanguageStaticByLang }
+                  },
+                  [_vm._v("Lưu")]
+                ),
+                _vm._v(" "),
                 _c("vs-input", {
                   attrs: { icon: "search", placeholder: "Search" },
                   on: { keyup: _vm.searchKey },
