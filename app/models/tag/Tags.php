@@ -43,6 +43,7 @@ class Tags extends Model
         $query->cate_product_id = 0;
         $query->status = $request->status;
         $query->image = $request->image;
+        $query->content = $this->normalizeMultilang($request->content);
         $query->save();
 
         return $query;

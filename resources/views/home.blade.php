@@ -761,8 +761,9 @@
         <div class="section-full p-t60 p-b0 trv-tour-category-section wow animate__fadeInUp" data-wow-delay="0.15s" style="background-image: url(https://thewebmax.org/travlla/images/background/tour-bg.jpg);">
             <div class="container">
                 <div class="trv-btm-title-section">
-                    <span>{{getLanguage('service')}}</span>
-                    <h2 class="trv-btm-title-large">{{getLanguage('service_description')}}</h2>
+                    
+                    <h2 class="trv-btm-title-large">{{getLanguage('service')}}</h2>
+                    <span>{{getLanguage('service_description')}}</span>
                 </div>
             </div>
             <div id="module">

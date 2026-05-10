@@ -63,7 +63,7 @@ body {
     padding: 0px;
     margin: 0px;
     overflow-x: hidden;
-    font-size: 15px;
+    font-size: 17px;
 }
 
 a {
@@ -21508,7 +21508,7 @@ blockquote .trv-bq-atr-name:before {
     bottom: 0px;
     position: absolute;
     background: #000000;
-    background: linear-gradient(182deg, rgb(218 37 29) 0%, rgb(0 0 0 / 64%) 50%, rgb(29 28 28 / 0%) 100%);
+    background: linear-gradient(182deg, rgb(0 86 130) 0%, rgb(0 0 0 / 64%) 50%, rgb(29 28 28 / 0%) 100%);
 }
 
 .trv-search-st5 {
@@ -21707,13 +21707,13 @@ blockquote .trv-bq-atr-name:before {
 .trv-pack-filter-bar-wrap {
     padding: 0;
     position: sticky;
-    top: 90px;
+    top: 149px;
     z-index: 10;
 }
 
 @media (max-width: 1365px) {
     .trv-pack-filter-bar-wrap {
-        top: 50px;
+        top: 121px;
         padding: 30px 22px;
     }
 }

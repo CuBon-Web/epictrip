@@ -33,15 +33,15 @@
                   />
                 </vs-select>
               </div>
-
               <div class="form-group">
-                <label>Ảnh bìa</label>
-                <image-upload
-                  v-model="objData.image"
-                  type="avatar"
-                  :title="'tag'"
-                ></image-upload>
-              </div>
+                <multi-lang-field
+                  v-model="objData.content"
+                  :languages="lang"
+                  type="tinymce"
+                  label="Nội dung"
+                  placeholder="Nội dung"
+                />
+              </div>  
 
               <div class="form-group">
                 <label>Trạng thái</label>
@@ -79,7 +79,10 @@ export default {
         status: 1,
         cate_tag_id: "",
         image: "",
-        cate_product_id: ""
+        content: [
+          { lang_code: "en-US", content: "" }
+        ],
+        cate_product_id: "",
       },
       categoryList: [],
       categoryPro: [],

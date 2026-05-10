@@ -23,8 +23,10 @@
                     placeholder="Tên danh mục"
                   />
                 </div>
-                <div class="form-group">
-                  <label>Ảnh bìa</label>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                  <label>Ảnh bản đồ</label>
                   <image-upload
                     v-model="objData.avatar"
                     type="avatar"
@@ -39,9 +41,26 @@
                     :title="'trang-chu'"
                   ></image-upload>
                 </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                  <multi-lang-field
+                    v-model="objData.content_table"
+                    :languages="lang"
+                    type="tinymce"
+                    label=" Bảng thông tin chung"
+                  />
+                </div>
+                  </div>
+                </div>
+                
                 <div class="form-group">
-                <label>Nội dung</label>
-                 <TinyMce v-model="objData.content" />
+                  <multi-lang-field
+                    v-model="objData.content"
+                    :languages="lang"
+                    type="tinymce"
+                    label="Giới thiệu"
+                  />
                 </div>
                 <div class="form-group">
                   <label for="exampleInputName1">Trạng thái</label>
@@ -69,7 +88,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import TinyMce from "../_common/tinymce";
 export default {
   data() {
     return {
@@ -84,7 +102,18 @@ export default {
             content:''
           }
         ],
-        content: "",
+        content: [
+          {
+            lang_code:'en-US',
+            content:''
+          }
+        ],  
+        content_table: [
+          {
+            lang_code:'en-US',
+            content:''
+          }
+        ],
         avatar: "",
         imagehome: "",
         status: "",
@@ -94,9 +123,7 @@ export default {
       errors:[]
     };
   },
-  components: {
-    TinyMce,
-  },
+  components: {},
   methods: {
     ...mapActions(["getInfoCate","saveCategory","listLanguage", "loadings"]),
     nameImage(event) {
@@ -112,6 +139,18 @@ export default {
                   this.objData.name.push(oj)
               }
           });
+    },
+    parseMultilang(value) {
+      if (Array.isArray(value)) return value;
+      if (typeof value === "string" && value !== "") {
+        try {
+          const parsed = JSON.parse(value);
+          if (Array.isArray(parsed)) return parsed;
+        } catch (e) {
+          return [{ lang_code: "en-US", content: value }];
+        }
+      }
+      return [{ lang_code: "en-US", content: "" }];
     },
     saveEdit() {
       this.errors = [];
@@ -151,14 +190,18 @@ export default {
         if(response.data == null){
           this.objData ={
             id:this.$route.params.id,
-            name: "",
+            name: [{ lang_code: "en-US", content: "" }],
+            content: [{ lang_code: "en-US", content: "" }],
+            content_table: [{ lang_code: "en-US", content: "" }],
             path: "",
             avatar: "",
             status: "",
           }
         }else{
           this.objData = response.data;
-          this.objData.name = JSON.parse(response.data.name);
+          this.objData.name = this.parseMultilang(response.data.name);
+          this.objData.content = this.parseMultilang(response.data.content);
+          this.objData.content_table = this.parseMultilang(response.data.content_table);
         }
       }).catch(error => {
         console.log(12);

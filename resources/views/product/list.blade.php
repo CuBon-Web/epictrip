@@ -23,6 +23,70 @@
     </script>
 @endsection
 @section('css')
+    <style>
+        .gioithieu-table-inner {
+            display: grid;
+            grid-template-columns: minmax(280px, 42%) 1fr;
+            gap: 0;
+            align-items: stretch;
+            margin: 24px 0 34px;
+            background: #e7decd;
+            overflow: hidden;
+        }
+
+        .gioithieu-table-media {
+            min-height: 360px;
+            background: #f5f5f5;
+        }
+
+        .gioithieu-table-media img {
+            width: 100%;
+            height: 100%;
+            min-height: 360px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gioithieu-table-content {
+            padding: 30px 28px;
+            color: #35312b;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .gioithieu-table-content h1,
+        .gioithieu-table-content h2,
+        .gioithieu-table-content h3,
+        .gioithieu-table-content h4 {
+            color: #2d2a26;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .gioithieu-table-content p {
+            margin-bottom: 12px;
+        }
+
+        .gioithieu-table-content strong,
+        .gioithieu-table-content b {
+            font-weight: 700;
+        }
+
+        @media (max-width: 767px) {
+            .gioithieu-table-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .gioithieu-table-media,
+            .gioithieu-table-media img {
+                min-height: 240px;
+            }
+
+            .gioithieu-table-content {
+                padding: 22px 18px;
+            }
+        }
+    </style>
 @endsection
 @section('content')
     @php
@@ -45,6 +109,29 @@
 
         <div class="section-full p-t20 p-b20 trv-package-sec-wrap">
             <div class="container">
+                <div class="gioithieu-content m-t30">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="gioithieu-content-inner">
+                                <div class="gioithieu-content-inner-title">
+                                    <h2>{{ $title ?? 'Tour Packages' }}</h2>
+                                </div>
+                                {!! languageName($content) !!}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                @if (!empty($cateno) && (!empty($cateno->avatar) || !empty($content_table)))
+                    <div class="gioithieu-table-inner">
+                        <div class="gioithieu-table-media">
+                            <img src="{{ $cateno->avatar ?: ($bannerImage ?? '/frontend/images/banner-tour-package.jpg') }}"
+                                alt="{{ $title ?? 'Destination' }}">
+                        </div>
+                        <div class="gioithieu-table-content">
+                            {!! languageName($content_table ?? '') !!}
+                        </div>
+                    </div>
+                @endif
                 <div class="trv-pack-filter-bar-wrap m-b30">
                     <div class="trav-pack-filter-bar">
                         <form id="product-filter-form" method="GET" action="">

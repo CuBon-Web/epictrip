@@ -41,8 +41,10 @@ class Category extends Model
             if ($query) {
                 $query->name = json_encode($request->name);
                 $query->slug = to_slug($request->name[0]['content']);
-                $query->content = $request->content;
+                $query->content = $this->normalizeMultilang($request->content);
+                $query->content_table = $this->normalizeMultilang($request->content_table);
                 $query->status = $request->status;
+                $query->sort_order = $request->sort_order ?? $query->sort_order ?? 0;
                 $query->avatar = $request->avatar;
                 $query->imagehome = $request->imagehome;
                 $query->save();
@@ -52,8 +54,10 @@ class Category extends Model
                 $query->language = 0;
                 $query->name = json_encode($request->name);
                 $query->slug = to_slug($request->name[0]['content']);
-                $query->content = $request->content;
+                $query->content = $this->normalizeMultilang($request->content);
+                $query->content_table = $this->normalizeMultilang($request->content_table);
                 $query->status = $request->status;
+                $query->sort_order = $request->sort_order ?? 0;
                 $query->avatar = $request->avatar;
                 $query->imagehome = $request->imagehome;
                 $query->save();
@@ -65,13 +69,36 @@ class Category extends Model
             $query->language = 0;
             $query->name = json_encode($request->name);
             $query->slug = to_slug($request->name[0]['content']);
-            $query->content = $request->content;
+            $query->content = $this->normalizeMultilang($request->content);
+            $query->content_table = $this->normalizeMultilang($request->content_table);
             $query->status = $request->status;
+            $query->sort_order = $request->sort_order ?? 0;
             $query->avatar = $request->avatar;
             $query->imagehome = $request->imagehome;
             $query->save();
             
         }
         return $query;
+    }
+
+    private function normalizeMultilang($value)
+    {
+        if (is_array($value)) {
+            return json_encode(array_values($value), JSON_UNESCAPED_UNICODE);
+        }
+
+        if (is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            if (is_array($decoded)) {
+                return json_encode(array_values($decoded), JSON_UNESCAPED_UNICODE);
+            }
+            return json_encode([
+                ['lang_code' => 'en-US', 'content' => $value],
+            ], JSON_UNESCAPED_UNICODE);
+        }
+
+        return json_encode([
+            ['lang_code' => 'en-US', 'content' => ''],
+        ], JSON_UNESCAPED_UNICODE);
     }
 }

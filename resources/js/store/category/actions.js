@@ -41,3 +41,13 @@ export const saveCategory = ({commit},opt) => {
         })
     });
 };
+
+export const sortCate = ({commit}, opt) => {
+    return new Promise((resolve, reject) => {
+        HTTP.post('/api/product/category/sort', opt).then(response => {
+            return resolve(response.data);
+        }).catch(error => {
+            return reject(error);
+        })
+    });
+};

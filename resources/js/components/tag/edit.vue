@@ -35,12 +35,13 @@
               </div>
 
               <div class="form-group">
-                <label>Ảnh bìa</label>
-                <image-upload
-                  v-model="objData.image"
-                  type="avatar"
-                  :title="'tag'"
-                ></image-upload>
+                <multi-lang-field
+                  v-model="objData.content"
+                  :languages="lang"
+                  type="tinymce"
+                  label="Nội dung"
+                  placeholder="Nội dung"
+                />
               </div>
 
               <div class="form-group">
@@ -80,7 +81,13 @@ export default {
         status: 1,
         cate_tag_id: "",
         cate_product_id: "",
-        image: ""
+        image: "",
+        content: [
+          {
+            lang_code: "en-US",
+            content: ""
+          }
+        ]
       },
       categoryList: [],
       categoryPro: [],
@@ -198,12 +205,14 @@ export default {
               status: 1,
               cate_tag_id: "",
               cate_product_id: "",
-              image: ""
+              image: "",
+              content: [{ lang_code: "en-US", content: "" }]
             };
           } else {
             this.objData = {
               ...response.data,
-              name: this.parseName(response.data.name)
+              name: this.parseName(response.data.name),
+              content: this.parseName(response.data.content)
             };
           }
         })

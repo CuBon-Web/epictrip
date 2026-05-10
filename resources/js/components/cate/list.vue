@@ -10,15 +10,19 @@
               <router-link class="nav-link" :to="{name:'add_category'}">
                 <vs-button type="gradient" style="float:right;">Thêm mới</vs-button>
               </router-link>
+              <vs-button color="primary" type="filled" style="float:right; margin-right:10px;" @click="saveSortOrder">
+                Lưu thứ tự
+              </vs-button>
               <vs-input
                 icon="search"
                 placeholder="Search"
                 v-model="keyword"
                 @keyup="searchCategory()"
               />
-              <vs-table max-items="5" pagination :data="list">
+              <vs-table stripe :data="list">
                 <template slot="thead">
                   <vs-th>ID</vs-th>
+                  <vs-th>Thứ tự</vs-th>
                   <vs-th>Tên</vs-th>
                   <vs-th>Ảnh bìa</vs-th>
                   <vs-th>Title</vs-th>
@@ -27,6 +31,30 @@
                 <template slot-scope="{data}">
                   <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr.id">{{tr.id}}</vs-td>
+                    <vs-td :data="tr.sort_order">
+                      <div class="sort-control">
+                        <vs-button
+                          size="small"
+                          color="primary"
+                          icon="keyboard_arrow_up"
+                          :disabled="indextr === 0"
+                          @click="moveCategory(indextr, -1)"
+                        ></vs-button>
+                        <vs-button
+                          size="small"
+                          color="primary"
+                          icon="keyboard_arrow_down"
+                          :disabled="indextr === list.length - 1"
+                          @click="moveCategory(indextr, 1)"
+                        ></vs-button>
+                        <input
+                          type="number"
+                          class="sort-input"
+                          v-model.number="tr.sort_order"
+                          @change="normalizeSortOrder"
+                        >
+                      </div>
+                    </vs-td>
                     <vs-td :data="tr.name">{{JSON.parse(tr.name)[0].content}}</vs-td>
                     <vs-td :data="tr.id">
                       <vs-avatar size="70px" :src="tr.avatar" />
@@ -76,7 +104,7 @@ export default {
     
   },
   methods: {
-    ...mapActions(["listCate","destroyCate", "loadings"]),
+    ...mapActions(["listCate","destroyCate", "sortCate", "loadings"]),
     closePop(event) {
       this.listCategory();
       this.popupActivo = event;
@@ -86,7 +114,7 @@ export default {
       this.listCate({ keyword: this.keyword })
       .then(response => {
           this.loadings(false);
-          this.list = response.data;
+          this.list = this.prepareSortOrder(response.data);
         });
     },
     searchCategory() {
@@ -97,9 +125,51 @@ export default {
       this.timer = setTimeout(() => {
           this.listCate({ keyword: this.keyword })
           .then(response => {
-            this.list = response.data;
+            this.list = this.prepareSortOrder(response.data);
           });
       }, 800);
+    },
+    prepareSortOrder(data) {
+      return (data || []).map((item, index) => ({
+        ...item,
+        sort_order: item.sort_order && parseInt(item.sort_order) > 0 ? parseInt(item.sort_order) : index + 1
+      }));
+    },
+    normalizeSortOrder() {
+      this.list = this.list
+        .map((item, index) => ({
+          ...item,
+          sort_order: item.sort_order && parseInt(item.sort_order) > 0 ? parseInt(item.sort_order) : index + 1
+        }))
+        .sort((a, b) => parseInt(a.sort_order) - parseInt(b.sort_order));
+    },
+    moveCategory(index, direction) {
+      const target = index + direction;
+      if (target < 0 || target >= this.list.length) return;
+      const next = [...this.list];
+      const currentItem = next[index];
+      next.splice(index, 1);
+      next.splice(target, 0, currentItem);
+      this.list = next.map((item, idx) => ({
+        ...item,
+        sort_order: idx + 1
+      }));
+    },
+    saveSortOrder() {
+      this.loadings(true);
+      this.sortCate({
+        categories: this.list.map((item, index) => ({
+          id: item.id,
+          sort_order: index + 1
+        }))
+      }).then(() => {
+        this.loadings(false);
+        this.$success('Lưu thứ tự danh mục thành công');
+        this.listCategory();
+      }).catch(() => {
+        this.loadings(false);
+        this.$error('Lưu thứ tự danh mục thất bại');
+      });
     },
     destroy(){
       this.loadings(true);
@@ -127,4 +197,18 @@ export default {
 };
 </script>
 <style>
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-input {
+  width: 64px;
+  height: 34px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  padding: 0 8px;
+  text-align: center;
+}
 </style>

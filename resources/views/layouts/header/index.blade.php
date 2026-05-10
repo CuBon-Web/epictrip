@@ -52,13 +52,13 @@
                        <li><a href="{{route('feedback')}}">{{getLanguage('feedback')}}</a></li>
                     </ul>
                  </li>
-                 <li class="has-child"><a href="javascript:;">{{getLanguage('service')}}</a>
+                 {{-- <li class="has-child"><a href="javascript:;">{{getLanguage('service')}}</a>
                   <ul class="sub-menu">
                       @foreach ($servicecatehome as $item)
                       <li><a href="{{route('serviceList',['slug'=>$item->slug])}}">{{languageName($item->name)}}</a></li>
                       @endforeach
                   </ul>                                                                 
-              </li>
+              </li> --}}
                   <li class="has-child"><a href="javascript:;">{{getLanguage('destination')}}</a>
                       <ul class="sub-menu">
                           @foreach ($categoryhome as $item)
@@ -76,14 +76,11 @@
                   </li>
                   @endforeach
                   {{-- <li><a href="{{route('gallery')}}">Gallery</a></li> --}}
-          
-                  <li class="has-child"><a href="javascript:;">{{getLanguage('blog')}}</a>
-                      <ul class="sub-menu">
-                          @foreach ($blogCate as $item)
-                          <li><a href="{{route('listCateBlog',['slug'=>$item->slug])}}">{{languageName($item->name)}}</a></li>
-                          @endforeach
-                      </ul>
+                  @foreach ($blogCate as $item)
+                  <li><a href="{{route('listCateBlog',['slug'=>$item->slug])}}">{{languageName($item->name)}}</a>
                   </li>
+                  @endforeach
+                 
                   <li><a href="{{route('lienHe')}}">{{getLanguage('contact')}}</a></li>
               </ul>
 

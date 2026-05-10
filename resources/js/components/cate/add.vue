@@ -38,8 +38,12 @@
                   ></image-upload>
                 </div>
                 <div class="form-group">
-                    <label>Nội dung</label>
-                    <TinyMce v-model="objData.content" />
+                  <multi-lang-field
+                    v-model="objData.content"
+                    :languages="lang"
+                    type="tinymce"
+                    label="Giới thiệu"
+                  />
                 </div>
                 <div class="form-group">
                   <label for="exampleInputName1">Trạng thái</label>
@@ -67,7 +71,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import TinyMce from "../_common/tinymce";
 export default {
   data() {
     return {
@@ -81,7 +84,12 @@ export default {
             content:''
           }
         ],
-        content: "",
+        content: [
+          {
+            lang_code:'en-US',
+            content:''
+          }
+        ],
         avatar: "",
         imagehome: "",
         status: 1,
@@ -91,9 +99,7 @@ export default {
       errors:[]
     };
   },
-components: {
-    TinyMce,
-  },
+components: {},
   methods: {
     ...mapActions(["saveCategory","listLanguage", "loadings"]),
     nameImage(event) {

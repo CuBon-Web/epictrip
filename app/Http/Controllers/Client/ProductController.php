@@ -217,11 +217,12 @@ class ProductController extends Controller
         }
 
         $data['list'] = $this->applyListFilters($request, $product)->paginate(12)->appends($request->query());
-        $data['cateno'] = Category::where('slug',$danhmuc)->first(['id','name','avatar','content','slug']);
+        $data['cateno'] = Category::where('slug',$danhmuc)->first(['id','name','avatar','content_table','content','slug','imagehome']);
         
-        $data['bannerPage'] = $data['cateno']->avatar ?? '';
+        $data['bannerPage'] = $data['cateno']->imagehome ?? '';
         $data['title'] = languageName($data['cateno']->name);
         $data['content'] = $data['cateno']->content;
+        $data['content_table'] = $data['cateno']->content_table;
         $data['cate_slug'] = $data['cateno']->slug;
         $data['type_slug'] = '';
         $data['type_two_slug'] = '';
@@ -234,7 +235,7 @@ class ProductController extends Controller
         $data['list'] = $this->applyListFilters($request, $product)->paginate(20)->appends($request->query());
         $data['type'] = TypeProduct::where('slug',$loaidanhmuc)->first(['id','name','cate_id','content','slug']);
         $cate_id = $data['type']->cate_id;
-        $data['cateno'] = Category::where('slug',$danhmuc)->first(['id','name','avatar','content','slug']);
+        $data['cateno'] = Category::where('slug',$danhmuc)->first(['id','name','avatar','content_table','content','slug','imagehome']);
         $data['filter'] = TagCate::with(['tags'])->get();
         
         $data['cate_slug'] = $data['cateno']->slug;
@@ -243,6 +244,7 @@ class ProductController extends Controller
 
         $data['title'] = languageName($data['type']->name);
         $data['content'] = $data['type']->content;
+        $data['content_table'] = $data['cateno']->content_table;
         return view('product.list',$data);
     }
     public function allListTypeTwo($danhmuc,$loaidanhmuc,$thuonghieu, Request $request){
@@ -250,7 +252,7 @@ class ProductController extends Controller
             ->select('id','category','name','discount','price','images','slug','cate_slug','type_slug','description','status_variant','variant','hang_muc','origin','thickness');
         $data['list'] = $this->applyListFilters($request, $product)->paginate(20)->appends($request->query());
         $data['typetwo'] = TypeProductTwo::where('slug',$thuonghieu)->first(['id','name','cate_id','content','slug']);
-        $data['cateno'] = Category::where('slug',$danhmuc)->first(['id','name','avatar','content','slug']);
+        $data['cateno'] = Category::where('slug',$danhmuc)->first(['id','name','avatar','content_table','content','slug','imagehome']);
         $data['type'] = TypeProduct::where('slug',$loaidanhmuc)->first(['id','name','cate_id','content','slug']);
 
         $data['cate_slug'] = $data['cateno']->slug;
@@ -259,6 +261,7 @@ class ProductController extends Controller
         $data['filter'] = TagCate::with(['tags'])->get();
         $data['title'] = languageName($data['typetwo']->name);
         $data['content'] = $data['typetwo']->content;
+        $data['content_table'] = $data['cateno']->content_table;
         return view('product.list',$data);
     }
     public function tag($tag, Request $request)
@@ -269,11 +272,12 @@ class ProductController extends Controller
             $data['list'] = $this->applyListFilters($request, $product)->paginate(12)->appends($request->query());
             
             $tag = Tags::where('slug',$tag)->first();
-            $data['cateno'] = Category::where('id',$tag->cate_product_id)->first(['id','name','avatar','content','slug']);
+            $data['cateno'] = Category::where('id',$tag->cate_product_id)->first(['id','name','avatar','content_table','content','slug','imagehome']);
             // $cate_id = $data['cateno']->id;
             // $data['cateid'] = $cate_id;
-            $data['title'] = $tag->name;
-            $data['content'] = $data['cateno']->content ?? 'none';
+            $data['title'] = languageName($tag->name);
+            $data['content'] = $tag->content ?? 'none';
+            $data['content_table'] = $data['cateno']->content_table ?? '';
             $data['bannerPage'] = $tag->image ?? '';
             $data['cate_slug'] = $data['cateno']->slug ?? '';
             $data['type_slug'] = '';

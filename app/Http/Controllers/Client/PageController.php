@@ -91,8 +91,8 @@ class PageController extends Controller
     public function postPostInfor(Request $request,Product $product )
     {
         $data = $product->createClient($request);
-        $data['category'] = Category::where(['status'=> 1])->orderBy('id','ASC')->get();
-        $data['categoryFirst'] = Category::where(['status'=> 1])->orderBy('id','ASC')->first();
+        $data['category'] = Category::where(['status'=> 1])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
+        $data['categoryFirst'] = Category::where(['status'=> 1])->orderBy('sort_order','ASC')->orderBy('id','ASC')->first();
         $productNewFirstTab = Product::where([
             'category'=> $data['categoryFirst'] ? $data['categoryFirst']->id : 0,
             'status' => 0

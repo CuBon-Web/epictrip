@@ -84,6 +84,7 @@ Route::group(['namespace'=>'Api','middleware'=>'auth:api'],function(){
 		Route::group(['prefix'=>'category'], function(){
 			Route::post('add','CategoryController@add');
 			Route::post('list','CategoryController@list');
+			Route::post('sort','CategoryController@sort');
 			Route::get('delete/{id}','CategoryController@delete');
 			Route::get('edit/{id}','CategoryController@edit');
 		});
