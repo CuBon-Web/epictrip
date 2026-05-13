@@ -71,7 +71,16 @@ class PageController extends Controller
         $data['partner'] = Partner::where(['status'=>1])->get(['id','image','name','link']);
         $data['founder'] = Founder::where(['status'=>1])->get(['id','name','position','image','description']);
         $data['album'] = Prize::where(['status'=>1])->get(['id','name','image']);
-        $data['gioithieu'] = PageContent::where(['slug'=>'gioi-thieu','language'=>Session::get('localelang')])->first(['id','title','content','image']);
+        $gioithieuRoot = PageContent::where('slug', 'gioi-thieu')->first(['id','quiz_id']);
+        $data['gioithieu'] = null;
+        if ($gioithieuRoot) {
+            $data['gioithieu'] = PageContent::where([
+                'quiz_id' => $gioithieuRoot->quiz_id,
+                'language' => Session::get('localelang'),
+            ])->first(['id','title','content','image'])
+            ?? PageContent::where('quiz_id', $gioithieuRoot->quiz_id)
+                ->first(['id','title','content','image']);
+        }
         $data['ReviewCus'] = ReviewCus::where('status',1)->get(); 
         $data['services'] = Services::where([
             ['status','=',1]

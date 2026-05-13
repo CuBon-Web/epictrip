@@ -6,7 +6,7 @@
 {{$pagecontentdetail->title}}
 @endsection
 @section('image')
-{{url(''.$banner[0]->image)}}
+{{ isset($banner[0]) ? url($banner[0]->image) : '' }}
 @endsection
 @section('css')
 @endsection

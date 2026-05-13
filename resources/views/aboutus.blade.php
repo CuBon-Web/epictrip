@@ -44,7 +44,7 @@ About {{$setting->company}}
 								<!-- TITLE START-->
 								<div class="section-head trv-head-title-wrap left-position">
 									<h2 class="trv-head-title">{{$setting->company}}</h2>
-									<div class="trv-head-discription">{!!languageName($gioithieu->content)!!}</div>
+									<div class="trv-head-discription">{!!languageName(optional($gioithieu)->content)!!}</div>
 								</div>
 								<!-- TITLE END-->
 
