@@ -322091,6 +322091,20 @@ var render = function() {
               [
                 _c("h4", { staticClass: "card-title" }, [_vm._v("Từ khóa")]),
                 _vm._v(" "),
+                _c(
+                  "vs-button",
+                  {
+                    staticStyle: { float: "right" },
+                    attrs: { type: "gradient" },
+                    on: {
+                      click: function($event) {
+                        _vm.popupActivo = true
+                      }
+                    }
+                  },
+                  [_vm._v("Thêm từ khóa")]
+                ),
+                _vm._v(" "),
                 _c("p", { staticClass: "card-description" }, [
                   _vm._v("Thêm mới hoặc sửa từ khóa")
                 ]),

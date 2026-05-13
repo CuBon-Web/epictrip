@@ -35,13 +35,13 @@
 
                <div class="col-xl-2 col-lg-3 col-md-6 col-sm-4 col-4 m-b20">
                    <div class="widget widget_services">
-                       <h3 class="widget-title">Khám phá</h3>
+                       <h3 class="widget-title">Menu</h3>
                        <ul>
                            <li><a href="{{ route('aboutUs') }}">{{getLanguage('about')}}</a></li>
                            
                            <li><a href="{{ route('feedback') }}">{{getLanguage('feedback')}}</a></li>
                            <li><a href="{{ route('gallery') }}">{{getLanguage('gallery')}}</a></li>
-                           @foreach ($blogCate->take(5) as $item)
+                           @foreach ($blogCate as $item)
                            <li><a href="{{ route('listCateBlog', ['slug' => $item->slug]) }}">{{ languageName($item->name) }}</a></li>
                            @endforeach
                            <li><a href="{{ route('lienHe') }}">{{getLanguage('contact')}}</a></li>
@@ -53,7 +53,7 @@
                    <div class="widget widget_services">
                        <h3 class="widget-title">{{getLanguage('destination')}}</h3>
                        <ul>
-                           @foreach ($categoryhome->take(5) as $item)
+                           @foreach ($categoryhome as $item)
                            <li><a href="{{ route('allListProCate', ['danhmuc' => $item->slug]) }}">{{ languageName($item->name) }}</a></li>
                            @endforeach
                        </ul>

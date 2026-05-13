@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title" >Từ khóa</h4>
-            <!-- <vs-button type="gradient" style="float:right;" @click="popupActivo=true">Thêm từ khóa</vs-button> -->
+            <vs-button type="gradient" style="float:right;" @click="popupActivo=true">Thêm từ khóa</vs-button>
             <p class="card-description">Thêm mới hoặc sửa từ khóa</p>
             <vs-button color="success" type="filled"  style="float:right;" @click="editLanguageStaticByLang">Lưu</vs-button>
             <vs-input icon="search" placeholder="Search" v-model="keyword" @keyup="searchKey" />
