@@ -105,6 +105,8 @@ if(!function_exists('languageName')){
         if (!is_iterable($arr)) {
             return $arrName;
         }
+        session()->forget('localelang');
+        dd(123);
         $code = localeLangCode();
         foreach($arr as $item){
             if(isset($item->lang_code) && $item->lang_code == $code){
