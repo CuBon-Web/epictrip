@@ -31,6 +31,14 @@
                 />
               </div>
               <div class="form-group">
+                <multi-lang-field
+                  v-model="objData.highlights"
+                  :languages="lang"
+                  type="tinymce"
+                  label="HIGHLIGHTS"
+                />
+              </div>
+              <div class="form-group">
                 <label>Ảnh tour</label>
                 <ImageMulti v-model="objData.images" :title="'san-pham'"/> 
               </div>
@@ -80,6 +88,68 @@
                 <el-button size="small" @click="addInput('ingredient')"
                   >Thêm giá trị</el-button
                 >
+              </div>
+              <div class="form-group tour-services-block">
+                <label class="tour-services-title">Services</label>
+                <h5 class="tour-services-subtitle">WHAT'S INCLUDED</h5>
+                <div
+                  v-for="(item, index) in objData.included_services"
+                  :key="'included-' + index"
+                  class="tour-service-row"
+                >
+                  <div class="row">
+                    <div class="col-11">
+                      <multi-lang-field
+                        v-model="objData.included_services[index].content"
+                        :languages="lang"
+                        type="text"
+                        :placeholder="'Mục included ' + (index + 1)"
+                      />
+                    </div>
+                    <div class="col-1">
+                      <a
+                        href="javascript:;"
+                        v-if="index != 0"
+                        @click="remoteAr(index, 'included_services')"
+                      >
+                        <img v-bind:src="'/media/' + joke.avatar" width="25" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <el-button size="small" @click="addInput('included_services')">
+                  Thêm mục included
+                </el-button>
+
+                <h5 class="tour-services-subtitle m-t20">WHAT'S NOT INCLUDED</h5>
+                <div
+                  v-for="(item, index) in objData.excluded_services"
+                  :key="'excluded-' + index"
+                  class="tour-service-row"
+                >
+                  <div class="row">
+                    <div class="col-11">
+                      <multi-lang-field
+                        v-model="objData.excluded_services[index].content"
+                        :languages="lang"
+                        type="text"
+                        :placeholder="'Mục not included ' + (index + 1)"
+                      />
+                    </div>
+                    <div class="col-1">
+                      <a
+                        href="javascript:;"
+                        v-if="index != 0"
+                        @click="remoteAr(index, 'excluded_services')"
+                      >
+                        <img v-bind:src="'/media/' + joke.avatar" width="25" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <el-button size="small" @click="addInput('excluded_services')">
+                  Thêm mục not included
+                </el-button>
               </div>
               <div class="row">
                 <div class="form-group col-4">
@@ -197,13 +267,23 @@
                 />
               </div>
               <div class="form-group">
-                <label>Hành trình kéo dài</label>
+                <label>Số ngày <small class="text-muted">(dùng cho bộ lọc thời lượng)</small></label>
                 <vs-input
-                  type="text"
+                  type="number"
+                  min="1"
                   size="default"
-                  placeholder="VD: 15 Days..."
+                  placeholder="VD: 15"
                   class="w-100"
+                  v-model.number="objData.duration_days"
+                />
+              </div>
+              <div class="form-group">
+                <multi-lang-field
                   v-model="objData.hang_muc"
+                  :languages="lang"
+                  type="text"
+                  label="Hành trình kéo dài"
+                  placeholder="VD: 15 Days / 15 Ngày"
                 />
               </div>
               <div class="form-group">
@@ -394,9 +474,31 @@ export default {
             ]
           },
         ],
+        included_services: [
+          {
+            content: [
+              { lang_code: "en-US", content: "" },
+              { lang_code: "es-ES", content: "" },
+            ],
+          },
+        ],
+        excluded_services: [
+          {
+            content: [
+              { lang_code: "en-US", content: "" },
+              { lang_code: "es-ES", content: "" },
+            ],
+          },
+        ],
         images: [],
         qty: "",
         description: [
+          {
+            lang_code: "en-US",
+            content: "",
+          },
+        ],
+        highlights: [
           {
             lang_code: "en-US",
             content: "",
@@ -415,7 +517,13 @@ export default {
         type_two:0,
         origin: "",
         thickness: "",
-        hang_muc: "",
+        hang_muc: [
+          {
+            lang_code: "en-US",
+            content: "",
+          },
+        ],
+        duration_days: "",
         service_id:0,
         lungtung:[],
         status_variant: 0,
@@ -544,10 +652,24 @@ export default {
 
       this.objData.tag_cate = matchedTagCate ? Number(matchedTagCate.id) : 0;
     },
-    
+    syncDurationDays() {
+      if (this.objData.duration_days) {
+        return;
+      }
+      const items = Array.isArray(this.objData.hang_muc) ? this.objData.hang_muc : [];
+      for (const item of items) {
+        const text = (item && item.content) ? String(item.content) : "";
+        const match = text.match(/(\d+)/);
+        if (match) {
+          this.objData.duration_days = parseInt(match[1], 10);
+          return;
+        }
+      }
+    },
     saveProducts() {
       this.errors = [];
       this.syncTagCateFromSelectedTags();
+      this.syncDurationDays();
      if(this.objData.name[0].content == '') this.errors.push('Tên không được để trống');
       if(this.objData.content[0].content == '') this.errors.push('Nội dung không được để trống');
       if(this.objData.description[0].content == '') this.errors.push('Mô tả không được để trống');
@@ -608,6 +730,35 @@ export default {
     remoteDetailTaskr(index,keytaskdetail) {
         this.objData.preserve[index].detail_date.splice(keytaskdetail, 1);
     },
+    createServiceItem() {
+      const langs =
+        this.lang && this.lang.length
+          ? this.lang.map((l) => ({ lang_code: l.code, content: "" }))
+          : [
+              { lang_code: "en-US", content: "" },
+              { lang_code: "es-ES", content: "" },
+            ];
+      return { content: langs };
+    },
+    parseServiceList(value) {
+      if (!value) {
+        return [this.createServiceItem()];
+      }
+      let parsed = value;
+      if (typeof value === "string") {
+        try {
+          parsed = JSON.parse(value);
+        } catch (e) {
+          return [this.createServiceItem()];
+        }
+      }
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        return [this.createServiceItem()];
+      }
+      return parsed.map((item) => ({
+        content: this.normalizeMultilang(item.content || item),
+      }));
+    },
     remoteAr(index,key) {
       if(key == 'size'){
         this.objData.size.splice(index, 1);
@@ -620,6 +771,12 @@ export default {
       }
         if(key == 'species'){
         this.objData.species.splice(index, 1);
+      }
+      if (key === "included_services") {
+        this.objData.included_services.splice(index, 1);
+      }
+      if (key === "excluded_services") {
+        this.objData.excluded_services.splice(index, 1);
       }
     },
     addInput(key) {
@@ -665,6 +822,12 @@ export default {
           oj.title = "";
           oj.detail = "";
           this.objData.size.push(oj);
+        }
+        if (key === "included_services") {
+          this.objData.included_services.push(this.createServiceItem());
+        }
+        if (key === "excluded_services") {
+          this.objData.excluded_services.push(this.createServiceItem());
         }
     },
     normalizeMultilang(value, defaultValue = "") {
@@ -723,6 +886,9 @@ export default {
           this.objData.price_chil = JSON.parse(response.data.price_chil);
           this.objData.discount = JSON.parse(response.data.discount);
           this.objData.description = JSON.parse(response.data.description);
+          this.objData.highlights = response.data.highlights
+            ? JSON.parse(response.data.highlights)
+            : [{ lang_code: "en-US", content: "" }];
           this.objData.tags = JSON.parse(response.data.tags);
           this.objData.variant = JSON.parse(response.data.variant);
           if(response.data.ingredient == null){
@@ -747,6 +913,14 @@ export default {
           }else{
             this.objData.preserve = JSON.parse(response.data.preserve);
           }
+          this.objData.hang_muc = this.normalizeMultilang(response.data.hang_muc);
+          this.objData.duration_days = response.data.duration_days || "";
+          this.objData.included_services = this.parseServiceList(
+            response.data.included_services
+          );
+          this.objData.excluded_services = this.parseServiceList(
+            response.data.excluded_services
+          );
       }).catch(error => {
         console.log(12);
       });
@@ -773,6 +947,23 @@ export default {
 };
 </script>
 <style scoped>
+.tour-services-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+}
+.tour-services-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 16px 0 10px;
+}
+.tour-service-row {
+  margin-bottom: 12px;
+}
+.m-t20 {
+  margin-top: 20px;
+}
 .centerx li {
     list-style: none!important;
 }

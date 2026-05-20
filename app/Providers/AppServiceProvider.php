@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
             ->select('id','category','name','discount','price','images','slug','cate_slug','type_slug','description','status_variant','variant','origin','thickness','description')
             ->limit(6)->get();
             $banner = Banner::where('status', 1)->orderBy('id', 'ASC')->get(['id','image','link','title','description','subtitle','status']);
-            $servicecatehome = ServiceCate::where('status',1)->orderBy('id','ASC')->get(['id','name','slug','image']);
+            $servicecatehome = ServiceCate::where('status',1)->orderBy('id','ASC')->get(['id','name','slug','image','description']);
             $cartcontent = session()->get('cart', []);
             $blogCate = BlogCategory::with([
                 'typeCate' => function ($query){
@@ -73,7 +73,7 @@ class AppServiceProvider extends ServiceProvider
             ->orderBy('id','DESC')
             ->get(['id','name','slug','avatar']);
             $wishlist = session()->get('wishlist', []);
-            $tagCate = TagCate::with(['tags','product'])->where('status',1)->orderBy('id','ASC')->get();
+            $tagCate = TagCate::with(['tags','product'])->where('status',1)->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
             $view->with([
                 'cateServices'=>$cateServices,
                 'setting' => $setting,

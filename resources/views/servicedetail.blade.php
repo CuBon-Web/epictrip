@@ -52,7 +52,7 @@
 				<!-- BREADCRUMB ROW -->                            
 				<div>
 					<ul class="wt-breadcrumb breadcrumb-style-2">
-						<li><a href="{{route('home')}}">{{getLanguage('welcome')}}</a></li>
+						<li><a href="{{route('home')}}">{{getLanguage('home')}}</a></li>
 						<li><a href="{{route('serviceList',['slug'=>$detail_service->cate_slug])}}">{{getLanguage('service')}}</a></li>
 						<li>{{languageName($detail_service->name)}}</li>
 					</ul>

@@ -30,8 +30,12 @@
                   ></image-upload>
                 </div>
                 <div class="form-group">
-                    <label>Mô tả ngắn</label>
-                    <TinyMce v-model="objData.description" />
+                  <multi-lang-field
+                    v-model="objData.description"
+                    :languages="lang"
+                    type="textarea"
+                    label="Mô tả ngắn"
+                  />
                 </div>
                 <div class="form-group">
                   <multi-lang-field
@@ -67,7 +71,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import TinyMce from "../_common/tinymce";
 export default {
   data() {
     return {
@@ -89,7 +92,12 @@ export default {
           },
         ],
         image: "",
-        description:"",
+        description: [
+          {
+            lang_code: "en-US",
+            content: "",
+          },
+        ],
         status: 1,
       },
       lang:[],
@@ -97,15 +105,15 @@ export default {
       errors:[]
     };
   }, 
-components: {
-    TinyMce,
-  },
+components: {},
   methods: {
     ...mapActions(["saveCategoryService","listLanguage", "loadings"]),
     saveEdit() {
       this.errors = [];
       if(this.objData.name[0].content == '') this.errors.push('Tên danh mục không được để trống');
-      if(this.objData.description == '') this.errors.push('Mô tả ngắn không để trống');
+      if(!this.objData.description[0].content || !String(this.objData.description[0].content).trim()) {
+        this.errors.push('Mô tả ngắn không được để trống');
+      }
       if (this.errors.length > 0) {
         this.errors.forEach((value, key) => {
           this.$error(value)

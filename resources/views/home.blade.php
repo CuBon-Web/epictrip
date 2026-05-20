@@ -762,7 +762,7 @@
             <div class="container">
                 <div class="trv-btm-title-section">
                     
-                    <h2 class="trv-btm-title-large">{{getLanguage('service')}}</h2>
+                    <h2 class="trv-btm-title-large text-capitalize">{{getLanguage('service')}}</h2>
                     <span>{{getLanguage('service_description')}}</span>
                 </div>
             </div>
@@ -774,7 +774,8 @@
                         <div class="trv-cat-sld swiper-slide" data-title="{{languageName($item->name)}}">
                             <div class="trv-tr-cat-carousal-media">
                                 <img src="{{$item->image}}" alt="Image">
-                                <h3 class="trv-bx-title"><a href="{{route('serviceList',['slug'=>$item->slug])}}">{{languageName($item->name)}}</a></h3>
+                                <h3 class="trv-bx-title"><a href="javascript:;">{{languageName($item->name)}}</a></h3>
+                                <p class="trv-bx-description line_2">{{languageName($item->description)}}</p>
                             </div>
                             
                         </div>
@@ -899,40 +900,53 @@
      @endforeach
         
 
-        <!-- CLIENT LOGO SECTION START -->
-        <div class="section-full trv-client-section wow animate__fadeInUp" data-wow-delay="0.15s">
-            <div class="trv-client-row">
-                <div class="container">
-                    <div class="section-content">
-                        <div class="trv-client-carousel">
-                            <div class="row">
-                                <div class="col-xl-2 col-lg-12 col-md-12">
-                                    <div class="trv-client-titlesection">
-                                        <h2 class="trv-head-title"><span class="site-text-yellow">{{getLanguage('trusted_partner')}}</h2>
-                                    </div>
-                                </div>
-                                <div class="col-xl-10 col-lg-12 col-md-12">
-                                    <div class="owl-carousel home-client-carousel">
-                                       @foreach ($partner as $item)
-                                       <div class="item">
-                                        <div class="ow-client-logo">
-                                            <div class="client-logo client-logo-media">
-                                                <a href="{{$item->link}}"><img loading="lazy" src="{{$item->image}}" alt=""></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+     <div class="section-full p-t60 p-b50 trv-ben-book-wrap">
+        <div class="container">
+            <!-- TITLE START-->
+            <div class="section-head trv-head-title-wrap center-position">
+                <h2 class="trv-head-title">Why Travel With EPIC TRIP TRAVEL</h2>
+                <div class="trv-head-discription">Discover the unrivalled benefits that promise memorable journeys all along.</div>
+                <div class="trv-head-title-image">
+                    <img loading="lazy" src="/frontend/images/Title-Separator.png" alt="Image">
                 </div>
             </div>
+            <!-- TITLE END-->
+
+            <div class="section-content">
+                <div class="trv-ben-book-sec row">
+                    @forelse ($whyTravelWith ?? [] as $item)
+                    <div class="col-lg-3 col-md-6">
+                        <div class="trv-ben-book-bx">
+                            @if($item->image)
+                            <div class="trv-ben-media">
+                                <img loading="lazy" src="{{ $item->image }}" alt="{{ strip_tags(languageName($item->title)) }}">
+                            </div>
+                            @endif
+                            <h3 class="trv-ben-title">{{ languageName($item->title) }}</h3>
+                            <p>{{ languageName($item->description) }}</p>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="col-lg-3 col-md-6">
+                        <div class="trv-ben-book-bx">
+                            <div class="trv-ben-media">
+                                <img loading="lazy" src="/frontend/images/book-rating/001.png" alt="image">
+                            </div>
+                            <h3 class="trv-ben-title">Customised Itineraries</h3>
+                            <p>Enjoy fully customisable tour packages, shaped around your interests for a truly personal experience.</p>
+                        </div>
+                    </div>
+                    @endforelse
+                </div>
+                
+            </div> 
+
         </div>
-        <!-- CLIENT LOGO  SECTION End -->
+    </div>
+    <!--Benefits of Booking With Us SECTION END-->
+
+
+</div>
 
 
         <!--3 STEP SECTION START-->

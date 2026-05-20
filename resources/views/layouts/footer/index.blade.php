@@ -35,7 +35,7 @@
 
                <div class="col-xl-2 col-lg-3 col-md-6 col-sm-4 col-4 m-b20">
                    <div class="widget widget_services">
-                       <h3 class="widget-title">Menu</h3>
+                       <h3 class="widget-title">{{getLanguage('menu')}}</h3>
                        <ul>
                            <li><a href="{{ route('aboutUs') }}">{{getLanguage('about')}}</a></li>
                            

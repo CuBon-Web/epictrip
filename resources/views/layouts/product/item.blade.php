@@ -23,7 +23,7 @@ if (isset($tagcateContext) && $tagcateContext && $tagcateContext->tags && $tagca
        <a href="{{route('detailProduct',['cate'=>$pro->cate_slug,'type'=>$pro->type_slug ? $pro->type_slug : 'type','id'=>$pro->slug])}}"><img src="{{$img[0]}}" alt="Image"></a>
        <div class="trv-tour-duration">
            <i class="bi bi-calendar2-week"></i>
-           <span>{{($pro->hang_muc)}}</span>
+           <span>{{ languageName($pro->hang_muc) }}</span>
        </div>
        <div class="trv-tour-title">
            <h3 class="trv-title">
@@ -48,12 +48,12 @@ if (isset($tagcateContext) && $tagcateContext && $tagcateContext->tags && $tagca
        </div>
        <div class="trv-content-bottom-section">
            <div class="trv-book">
-               <a href="{{route('detailProduct',['cate'=>$pro->cate_slug,'type'=>$pro->type_slug ? $pro->type_slug : 'type','id'=>$pro->slug])}}" class="site-button outline">Book Now</a>
+               <a href="{{route('detailProduct',['cate'=>$pro->cate_slug,'type'=>$pro->type_slug ? $pro->type_slug : 'type','id'=>$pro->slug])}}" class="site-button outline">{{getLanguage('book_now')}}</a>
            </div>
            <div class="trv-tour-rating">
-               <span class="trv-tour-review-count">Price</span>
+               <span class="trv-tour-review-count">{{getLanguage('price')}}</span>
                <div class="trv-review-rating">
-                   <i>Contact Us</i>
+                   <i>{{getLanguage('contact_us')}}</i>
                </div>
            </div>
        </div>

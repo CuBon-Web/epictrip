@@ -32,8 +32,12 @@
                   ></image-upload>
                 </div>
                 <div class="form-group">
-                <label>Mô tả ngắn</label>
-                 <TinyMce v-model="objData.description" />
+                  <multi-lang-field
+                    v-model="objData.description"
+                    :languages="lang"
+                    type="textarea"
+                    label="Mô tả ngắn"
+                  />
                 </div>
                 <div class="form-group">
                   <multi-lang-field
@@ -69,7 +73,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import TinyMce from "../_common/tinymce";
 export default {
   data() {
     return {
@@ -93,15 +96,17 @@ export default {
         ],
         image: "",
         status: "",
-        description:""
+        description: [
+          {
+            lang_code: "en-US",
+            content: "",
+          },
+        ]
       },
       lang:[],
       img: "",
       errors:[]
     };
-  },
-  components: {
-    TinyMce,
   },
   methods: {
     ...mapActions(["getInfoCateService","saveCategoryService","listLanguage", "loadings"]),
@@ -138,10 +143,27 @@ export default {
         });
       }
     },
+    parseMultilangField(value) {
+      if (!value) {
+        return [{ lang_code: "en-US", content: "" }];
+      }
+      if (Array.isArray(value)) {
+        return value;
+      }
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch (e) {}
+      return [{ lang_code: "en-US", content: value }];
+    },
     saveEdit() {
       this.errors = [];
       if(this.objData.name[0].content == '') this.errors.push('Tên danh mục không được để trống');
-      if(this.objData.description == '') this.errors.push('Mô tả ngắn không để trống');
+      if(!this.objData.description[0].content || !String(this.objData.description[0].content).trim()) {
+        this.errors.push('Mô tả ngắn không được để trống');
+      }
       if (this.errors.length > 0) {
         this.errors.forEach((value, key) => {
           this.$error(value)
@@ -186,6 +208,7 @@ export default {
           this.objData = response.data;
           this.objData.content = JSON.parse(response.data.content);
           this.objData.name = JSON.parse(response.data.name);
+          this.objData.description = this.parseMultilangField(response.data.description);
         }
       }).catch(error => {
         console.log(12);

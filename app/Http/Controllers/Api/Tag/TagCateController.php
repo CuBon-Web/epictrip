@@ -20,15 +20,30 @@ class TagCateController extends Controller
     {
         $keyword = $request->keyword;
         if($keyword == ""){
-            $data = TagCate::with(['cateProduct'])->orderBy('id','DESC')->get();
+            $data = TagCate::with(['cateProduct'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
         }else{
-            $data = TagCate::where('name', 'LIKE', '%'.$keyword.'%')->orderBy('id','DESC')->get()->toArray();
+            $data = TagCate::where('name', 'LIKE', '%'.$keyword.'%')->orderBy('sort_order','ASC')->orderBy('id','ASC')->get()->toArray();
         }
         return response()->json([
             'data' => $data,
             'message' => 'success'
         ]);
     }
+    public function sort(Request $request)
+    {
+        foreach ((array) $request->categories as $item) {
+            if (!empty($item['id'])) {
+                TagCate::where('id', $item['id'])->update([
+                    'sort_order' => (int) ($item['sort_order'] ?? 0)
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Sort Success'
+        ], 200);
+    }
+
     public function edit($id)
     {
         $data = TagCate::where(['id'=>$id])->first();

@@ -17,7 +17,7 @@ class SessionCheckLanguage
     public function handle($request, Closure $next)
     {
         $supportedLanguages = ['en-US', 'es-ES'];
-        $defaultLanguage = 'en-US';
+        $defaultLanguage = config('app.locale', 'es-ES');
 
         if (!in_array(Session::get('locale'), $supportedLanguages, true)) {
             Session::put('locale', $defaultLanguage);

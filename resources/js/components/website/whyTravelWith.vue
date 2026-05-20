@@ -1,19 +1,23 @@
 <template>
   <div>
-    <h3 class="page-title">Quản lý Founder</h3>
+    <h3 class="page-title">Why travel with</h3>
     <div class="row">
       <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <div class="founder-item" v-for="(item, key) in objData" :key="'founder-' + key">
-              <div class="founder-item__head">
-                <h5>Founder {{ key + 1 }}</h5>
+            <div
+              class="why-item"
+              v-for="(item, key) in objData"
+              :key="'why-travel-' + key"
+            >
+              <div class="why-item__head">
+                <h5>Mục {{ key + 1 }}</h5>
                 <button
                   v-if="objData.length > 1"
                   type="button"
-                  class="founder-remove"
-                  title="Xóa founder"
-                  @click="removeObjBanner(key)"
+                  class="why-remove"
+                  title="Xóa mục"
+                  @click="removeItem(key)"
                 >
                   <vs-icon icon="clear"></vs-icon>
                 </button>
@@ -21,26 +25,21 @@
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <image-upload type="avatar" v-model="item.image" :title="'thanh-vien-'"></image-upload>
+                    <image-upload
+                      type="avatar"
+                      v-model="item.image"
+                      :title="'why-travel-'"
+                    ></image-upload>
                   </div>
                 </div>
                 <div class="col-md-9">
                   <div class="form-group">
                     <multi-lang-field
-                      v-model="item.name"
+                      v-model="item.title"
                       :languages="lang"
                       type="text"
-                      label="Tên"
-                      placeholder="Tên Founder"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <multi-lang-field
-                      v-model="item.position"
-                      :languages="lang"
-                      type="text"
-                      label="Chức vụ"
-                      placeholder="Chức vụ"
+                      label="Tiêu đề"
+                      placeholder="Tiêu đề"
                     />
                   </div>
                   <div class="form-group">
@@ -48,8 +47,8 @@
                       v-model="item.description"
                       :languages="lang"
                       type="textarea"
-                      label="Mô tả"
-                      placeholder="Mô tả founder"
+                      label="Mô tả ngắn"
+                      placeholder="Mô tả ngắn"
                     />
                   </div>
                   <div class="form-group">
@@ -62,8 +61,9 @@
                 </div>
               </div>
             </div>
-            <vs-button color="primary" @click="saveFounders">Lưu</vs-button>
-            <vs-button color="success" @click="addObjBanner">Thêm Founder</vs-button>
+
+            <vs-button color="primary" @click="saveItems">Lưu</vs-button>
+            <vs-button color="success" @click="addItem">Thêm mục</vs-button>
           </div>
         </div>
       </div>
@@ -75,23 +75,30 @@
 import { mapActions } from "vuex";
 
 export default {
-  name: "founder",
+  name: "whyTravelWith",
   data() {
     return {
       lang: [],
-      objData: []
+      objData: [],
     };
   },
   methods: {
-    ...mapActions(["saveFounder", "loadings", "listFounder", "listLanguage"]),
+    ...mapActions([
+      "saveWhyTravelWith",
+      "loadings",
+      "listWhyTravelWith",
+      "listLanguage",
+    ]),
     createTranslatable(value = "") {
-      const langs = this.lang && this.lang.length
-        ? this.lang
-        : [{ code: "en-US" }, { code: "es-ES" }];
+      const langs =
+        this.lang && this.lang.length
+          ? this.lang
+          : [{ code: "en-US" }, { code: "es-ES" }];
 
       return langs.map((item, index) => ({
-        lang_code: item.code || item.lang_code || (index === 0 ? "en-US" : "es-ES"),
-        content: index === 0 ? value : ""
+        lang_code:
+          item.code || item.lang_code || (index === 0 ? "en-US" : "es-ES"),
+        content: index === 0 ? value : "",
       }));
     },
     parseTranslatable(value) {
@@ -113,104 +120,106 @@ export default {
       return this.createTranslatable("");
     },
     fillMissingLanguages(value) {
-      const normalized = value.map(item => ({
+      const normalized = value.map((item) => ({
         lang_code: item.lang_code || item.code || "en-US",
-        content: item.content || ""
+        content: item.content || "",
       }));
 
-      (this.lang || []).forEach(langItem => {
+      (this.lang || []).forEach((langItem) => {
         const code = langItem.code || langItem.lang_code;
-        if (code && !normalized.some(item => item.lang_code === code)) {
+        if (code && !normalized.some((item) => item.lang_code === code)) {
           normalized.push({ lang_code: code, content: "" });
         }
       });
 
       return normalized.length ? normalized : this.createTranslatable("");
     },
-    createFounder(data = {}) {
+    createItem(data = {}) {
       return {
         image: data.image || "",
         status: String(data.status != null ? data.status : 1),
-        name: this.parseTranslatable(data.name || ""),
-        position: this.parseTranslatable(data.position || ""),
-        description: this.parseTranslatable(data.description || "")
+        sort_order: data.sort_order != null ? data.sort_order : 0,
+        title: this.parseTranslatable(data.title || ""),
+        description: this.parseTranslatable(data.description || ""),
       };
     },
     normalizePayload() {
-      return this.objData.map(item => ({
-        image: item.image || "",
-        status: parseInt(item.status, 10),
-        name: this.fillMissingLanguages(item.name || []),
-        position: this.fillMissingLanguages(item.position || []),
-        description: this.fillMissingLanguages(item.description || [])
-      }));
+      return {
+        data: this.objData.map((item, index) => ({
+          image: item.image || "",
+          status: parseInt(item.status, 10),
+          sort_order: index,
+          title: this.fillMissingLanguages(item.title || []),
+          description: this.fillMissingLanguages(item.description || []),
+        })),
+      };
     },
-    saveFounders() {
+    saveItems() {
       this.loadings(true);
-      this.saveFounder({ data: this.normalizePayload() })
+      this.saveWhyTravelWith(this.normalizePayload())
         .then(() => {
           this.loadings(false);
-          this.$success("Sửa Founder thành công");
-          this.listFounders();
+          this.$success("Lưu thành công");
+          this.fetchList();
         })
         .catch(() => {
           this.loadings(false);
-          this.$error("Sửa Founder thất bại");
+          this.$error("Lưu thất bại");
         });
     },
-    addObjBanner() {
-      this.objData.push(this.createFounder());
+    addItem() {
+      this.objData.push(this.createItem());
     },
-    removeObjBanner(i) {
+    removeItem(i) {
       this.objData.splice(i, 1);
     },
     listLang() {
-      return this.listLanguage().then(response => {
+      return this.listLanguage().then((response) => {
         this.lang = response.data || [];
       });
     },
-    listFounders() {
+    fetchList() {
       this.loadings(true);
-      this.listFounder()
-        .then(response => {
-          const data = response.data || [];
-          this.objData = data.length
-            ? data.map(item => this.createFounder(item))
-            : [this.createFounder()];
+      this.listWhyTravelWith()
+        .then((response) => {
+          const items = response.data || [];
+          this.objData = items.length
+            ? items.map((item) => this.createItem(item))
+            : [this.createItem()];
           this.loadings(false);
         })
         .catch(() => {
           this.loadings(false);
         });
-    }
+    },
   },
   mounted() {
     this.loadings(true);
     this.listLang()
       .catch(() => {})
-      .then(() => this.listFounders());
-  }
+      .then(() => this.fetchList());
+  },
 };
 </script>
 
 <style scoped>
-.founder-item {
+.why-item {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 18px;
   margin-bottom: 20px;
 }
-.founder-item__head {
+.why-item__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
 }
-.founder-item__head h5 {
+.why-item__head h5 {
   margin: 0;
   font-weight: 600;
 }
-.founder-remove {
+.why-remove {
   border: none;
   background: transparent;
   cursor: pointer;

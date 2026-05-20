@@ -70,7 +70,7 @@ class ProductController extends Controller
         }
 
         if ($request->filled('duration_range')) {
-            $durationExpr = "CAST(hang_muc AS UNSIGNED)";
+            $durationExpr = productDurationExpr();
             if ($request->duration_range === '1-3') {
                 $product = $product->whereRaw("$durationExpr BETWEEN 1 AND 3");
             } elseif ($request->duration_range === '4-7') {
@@ -113,7 +113,7 @@ class ProductController extends Controller
         $data['cate_slug'] = '';
         $data['type_slug'] = '';
         $data['type_two_slug'] = '';
-        $data['filter'] = TagCate::with(['tags'])->where('status_filter', 1)->get();
+        $data['filter'] = TagCate::with(['tags'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->where('status_filter', 1)->get();
         return view('product.list',$data);
     }
     public function Destination(){
@@ -226,7 +226,7 @@ class ProductController extends Controller
         $data['cate_slug'] = $data['cateno']->slug;
         $data['type_slug'] = '';
         $data['type_two_slug'] = '';
-        $data['filter'] = TagCate::with(['tags'])->get();
+        $data['filter'] = TagCate::with(['tags'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
         return view('product.list',$data);
     }
     public function allListType($danhmuc,$loaidanhmuc, Request $request){
@@ -236,7 +236,7 @@ class ProductController extends Controller
         $data['type'] = TypeProduct::where('slug',$loaidanhmuc)->first(['id','name','cate_id','content','slug']);
         $cate_id = $data['type']->cate_id;
         $data['cateno'] = Category::where('slug',$danhmuc)->first(['id','name','avatar','content_table','content','slug','imagehome']);
-        $data['filter'] = TagCate::with(['tags'])->get();
+        $data['filter'] = TagCate::with(['tags'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
         
         $data['cate_slug'] = $data['cateno']->slug;
         $data['type_slug'] = $data['type']->slug;
@@ -258,7 +258,7 @@ class ProductController extends Controller
         $data['cate_slug'] = $data['cateno']->slug;
         $data['type_slug'] = $data['type']->slug;
         $data['type_two_slug'] = $data['typetwo']->slug;
-        $data['filter'] = TagCate::with(['tags'])->get();
+        $data['filter'] = TagCate::with(['tags'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
         $data['title'] = languageName($data['typetwo']->name);
         $data['content'] = $data['typetwo']->content;
         $data['content_table'] = $data['cateno']->content_table;
@@ -282,7 +282,7 @@ class ProductController extends Controller
             $data['cate_slug'] = $data['cateno']->slug ?? '';
             $data['type_slug'] = '';
             $data['type_two_slug'] = '';
-            $data['filter'] = TagCate::with(['tags'])->get();
+            $data['filter'] = TagCate::with(['tags'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
         return view('product.list',$data);
     }
     public function CateProList($cate)
@@ -362,7 +362,7 @@ class ProductController extends Controller
             $product = $product->where('type_two_slug',$request->typetwo);
         }
         if($request->duration_range){
-            $durationExpr = "CAST(hang_muc AS UNSIGNED)";
+            $durationExpr = productDurationExpr();
             if($request->duration_range === '1-3'){
                 $product = $product->whereRaw("$durationExpr BETWEEN 1 AND 3");
             }elseif($request->duration_range === '4-7'){

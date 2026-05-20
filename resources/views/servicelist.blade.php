@@ -3,7 +3,7 @@
 {{languageName($cateService->name)}}
 @endsection
 @section('description')
-{{$cateService->description}}
+{{languageName($cateService->description)}}
 @endsection
 @section('image')
 {{url('frontend/images/12.jpg')}}
@@ -15,7 +15,7 @@
    '@type' => 'CollectionPage',
    'name' => languageName($cateService->name),
    'url' => url()->current(),
-   'description' => $cateService->description,
+   'description' => strip_tags(languageName($cateService->description)),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endsection
@@ -37,7 +37,7 @@
                <!-- BREADCRUMB ROW -->                            
                <div>
                    <ul class="wt-breadcrumb breadcrumb-style-2">
-                       <li><a href="{{route('home')}}">{{getLanguage('welcome')}}</a></li>
+                       <li><a href="{{route('home')}}">{{getLanguage('home')}}</a></li>
                        <li><a href="">{{getLanguage('service')}}</a></li>
                        <li>{{languageName($cateService->name)}}</li>
                    </ul>

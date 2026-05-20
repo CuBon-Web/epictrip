@@ -36,13 +36,14 @@
 
         .gioithieu-table-media {
             min-height: 360px;
-            background: #f5f5f5;
+            background: #e7decd;
+            margin: auto;
         }
 
         .gioithieu-table-media img {
             width: 100%;
-            height: 100%;
-            min-height: 360px;
+            height: auto;
+            /* min-height: 360px; */
             object-fit: cover;
             display: block;
         }
@@ -100,7 +101,7 @@
                 <div class="trv-search-st5">
                     <h3 class="trv-search-st5-title">{{ $title ?? 'Tour Packages' }}</h3>
                     <ul class="wt-breadcrumb breadcrumb-style-2">
-                        <li><a class="text-white" href="{{route('home')}}">Home</a></li>
+                        <li><a class="text-white" href="{{route('home')}}">{{getLanguage('home')}}</a></li>
                         <li class="text-white">{{ $title ?? 'Tour Packages' }}</li>
                     </ul>
                 </div>
@@ -141,20 +142,20 @@
                             <div class="trv-filter-bar-section">
                                 <div class="trv-filter-bar-left">
                                     <div class="trv-filter-bar-bx">
-                                        <button class="trv-filter-btn" data-target="sort" type="button">Sort By <i class="bi bi-chevron-down"></i></button>
+                                        <button class="trv-filter-btn" data-target="sort" type="button">{{getLanguage('sort_by')}} <i class="bi bi-chevron-down"></i></button>
                                         <div class="trv-filter-content" id="sort">
-                                            <h4>Sort By</h4>
-                                            <label><input class="js-auto-filter" type="radio" name="sortby" value="created-asc" {{ request('sortby', 'created-asc') == 'created-asc' ? 'checked' : '' }}> Newest</label>
-                                            <label><input class="js-auto-filter" type="radio" name="sortby" value="price-asc" {{ request('sortby') == 'price-asc' ? 'checked' : '' }}> Price: Low to High</label>
-                                            <label><input class="js-auto-filter" type="radio" name="sortby" value="price-desc" {{ request('sortby') == 'price-desc' ? 'checked' : '' }}> Price: High to Low</label>
+                                            <h4>{{getLanguage('sort_by')}}</h4>
+                                            <label><input class="js-auto-filter" type="radio" name="sortby" value="created-asc" {{ request('sortby', 'created-asc') == 'created-asc' ? 'checked' : '' }}> {{getLanguage('newest')}}</label>
+                                            <label><input class="js-auto-filter" type="radio" name="sortby" value="price-asc" {{ request('sortby') == 'price-asc' ? 'checked' : '' }}> {{getLanguage('price_low_to_high')}}</label>
+                                            <label><input class="js-auto-filter" type="radio" name="sortby" value="price-desc" {{ request('sortby') == 'price-desc' ? 'checked' : '' }}> {{getLanguage('price_high_to_low')}}</label>
                                         </div>
                                     </div>
 
                                     <div class="trv-filter-bar-bx">
                                         <button class="trv-filter-btn" data-target="package" type="button">Package Type <i class="bi bi-chevron-down"></i></button>
                                         <div class="trv-filter-content" id="package">
-                                            <h4>Package Type</h4>
-                                            <label><input class="js-auto-filter" type="radio" name="cate_filter" value="" {{ request('cate_filter', '') == '' ? 'checked' : '' }}> All</label>
+                                            <h4>{{getLanguage('package_type')}}</h4>
+                                            <label><input class="js-auto-filter" type="radio" name="cate_filter" value="" {{ request('cate_filter', '') == '' ? 'checked' : '' }}> {{getLanguage('all')}}</label>
                                             @foreach ($categoryhome as $cateItem)
                                                 <label><input class="js-auto-filter" type="radio" name="cate_filter" value="{{ $cateItem->slug }}" {{ request('cate_filter') == $cateItem->slug ? 'checked' : '' }}> {{ languageName($cateItem->name) }}</label>
                                             @endforeach
@@ -162,10 +163,10 @@
                                     </div>
 
                                     <div class="trv-filter-bar-bx">
-                                        <button class="trv-filter-btn" data-target="duration" type="button">Duration <i class="bi bi-chevron-down"></i></button>
+                                        <button class="trv-filter-btn" data-target="duration" type="button">{{getLanguage('duration')}} <i class="bi bi-chevron-down"></i></button>
                                         <div class="trv-filter-content" id="duration">
-                                            <h4>Duration</h4>
-                                            <label><input class="js-auto-filter" type="radio" name="duration_range" value="" {{ request('duration_range', '') == '' ? 'checked' : '' }}> All</label>
+                                            <h4>{{getLanguage('duration')}}</h4>
+                                            <label><input class="js-auto-filter" type="radio" name="duration_range" value="" {{ request('duration_range', '') == '' ? 'checked' : '' }}> {{getLanguage('all')}}</label>
                                             <label><input class="js-auto-filter" type="radio" name="duration_range" value="1-3" {{ request('duration_range') == '1-3' ? 'checked' : '' }}> 1-3 Days</label>
                                             <label><input class="js-auto-filter" type="radio" name="duration_range" value="4-7" {{ request('duration_range') == '4-7' ? 'checked' : '' }}> 4-7 Days</label>
                                             <label><input class="js-auto-filter" type="radio" name="duration_range" value="8-11" {{ request('duration_range') == '8-11' ? 'checked' : '' }}> 8-11 Days</label>
@@ -196,7 +197,7 @@
                                 </div>
 
                                 <div class="trv-filter-bar-right">
-                                    <a href="javascript:;" class="trv-reset-btn js-reset-filter">Reset All</a>
+                                    <a href="javascript:;" class="trv-reset-btn js-reset-filter">{{getLanguage('reset_all')}}</a>
                                 </div>
                             </div>
                         </form>

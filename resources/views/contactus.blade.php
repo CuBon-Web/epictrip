@@ -1,9 +1,9 @@
 @extends('layouts.main.master')
 @section('title')
-Liên hệ
+{{getLanguage('contact')}}
 @endsection
 @section('description')
-Liên hệ
+{{getLanguage('contact')}}
 @endsection
 @section('image')
 {{url(''.$setting->logo)}}
@@ -26,7 +26,7 @@ Liên hệ
 				<!-- BREADCRUMB ROW -->                            
 				<div>
 					<ul class="wt-breadcrumb breadcrumb-style-2">
-						<li><a href="{{route('home')}}">{{getLanguage('welcome')}}</a></li>
+						<li><a href="{{route('home')}}">{{getLanguage('home')}}</a></li>
 						<li>{{getLanguage('contact')}}</li>
 					</ul>
 				</div>
@@ -50,16 +50,16 @@ Liên hệ
 						<form class="trv-cons-contact-form" method="post" action="{{route('postcontact')}}">
 							@csrf
 							<div class="form-group">
-								<input class="form-control" name="name" required type="text" placeholder="Full Name">
+								<input class="form-control" name="name" required type="text" placeholder="{{getLanguage('enter_your_name')}}">
 							</div>
 							<div class="form-group">
-								<input class="form-control" name="email" type="email" placeholder="Email Address">
+								<input class="form-control" name="email" type="email" placeholder="{{getLanguage('enter_email_address')}}">
 							</div>
 							<div class="form-group">
-								<input class="form-control" name="phone" required type="text" placeholder="Phone Number">
+								<input class="form-control" name="phone" required type="text" placeholder="{{getLanguage('enter_phone_number')}}">
 							</div>
 							<div class="form-group">
-								<textarea  class="form-control"  name="mess" placeholder="Enter Your Message"></textarea>
+								<textarea  class="form-control"  name="mess" placeholder="{{getLanguage('enter_your_message')}}"></textarea>
 							</div>
 							<button type="submit" class="site-button butn-bg-shape">{{getLanguage('send_message')}}</button>
 						</form>
@@ -85,7 +85,7 @@ Liên hệ
 											</div>
 										</div>
 										<div class="info">
-											<span class="title">{{getLanguage('phone')}}</span>
+											<span class="title">{{getLanguage('Phone')}}</span>
 											<h6 class="text">{{$setting->phone1}}</h6>
 										</div>
 									</div>
@@ -112,7 +112,7 @@ Liên hệ
 											</div>
 										</div>
 										<div class="info">
-											<span class="title">{{getLanguage('address')}}</span>
+											<span class="title">{{getLanguage('Address')}}</span>
 											<h6 class="text">{{$setting->address1}}</h6>
 										</div>
 									</div>

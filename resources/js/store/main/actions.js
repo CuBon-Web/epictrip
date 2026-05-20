@@ -159,3 +159,21 @@ export const listFounder  = ({commit},opt) => {
         })
     });
 };
+export const saveWhyTravelWith = ({commit}, opt) => {
+    return new Promise((resolve, reject) => {
+        HTTP.post('/api/website/why-travel-with', opt).then(response => {
+            return resolve(response.data);
+        }).catch(error => {
+            return reject(error);
+        })
+    });
+};
+export const listWhyTravelWith = ({commit}, opt) => {
+    return new Promise((resolve, reject) => {
+        HTTP.get('/api/website/list-why-travel-with', opt).then(response => {
+            return resolve(response.data);
+        }).catch(error => {
+            return reject(error);
+        })
+    });
+};

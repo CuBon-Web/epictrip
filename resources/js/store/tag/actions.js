@@ -32,6 +32,16 @@ export const getInfoTag = ({commit},opt) => {
     });
 };
 
+export const sortTag = ({commit}, opt) => {
+    return new Promise((resolve, reject) => {
+        HTTP.post('/api/tag/sort', opt).then(response => {
+            return resolve(response.data);
+        }).catch(error => {
+            return reject(error);
+        })
+    });
+};
+
 export const saveTag = ({commit},opt) => {
     return new Promise((resolve, reject) => {
         HTTP.post('/api/tag/add',opt).then(response => {

@@ -19,7 +19,7 @@ class TagCate extends Model
     }
     public function tags()
     {
-        return $this->hasMany(Tags::class,'cate_tag_id','id');
+        return $this->hasMany(Tags::class,'cate_tag_id','id')->orderBy('sort_order','ASC')->orderBy('id','ASC');
     }
     public function saveCate($request)
     {
@@ -42,6 +42,9 @@ class TagCate extends Model
         $query->cate_product_slug = '';
         $query->status = $request->status;
         $query->status_filter = $request->status_filter;
+        if ($id == "") {
+            $query->sort_order = (int) TagCate::max('sort_order') + 1;
+        }
         $query->save();
 
         return $query;

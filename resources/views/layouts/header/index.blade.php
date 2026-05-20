@@ -97,7 +97,7 @@
                     <div class="trv-hdr-1-social">
                        @php
                          $supportedLangs = ['en-US', 'es-ES'];
-                         $currentLang = in_array(session('localelang'), $supportedLangs, true) ? session('localelang') : 'en-US';
+                         $currentLang = in_array(session('localelang'), $supportedLangs, true) ? session('localelang') : config('app.locale', 'es-ES');
                          $flagMap = [
                            'en-US' => ['src' => url('frontend/images/flags/en.png'), 'alt' => 'EN', 'name' => 'English'],
                            'es-ES' => ['src' => url('frontend/images/flags/es.png'), 'alt' => 'ES', 'name' => 'Spanish'],

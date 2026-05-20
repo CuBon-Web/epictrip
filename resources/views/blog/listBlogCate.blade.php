@@ -35,8 +35,8 @@ New update
               <!-- BREADCRUMB ROW -->                            
               <div>
                   <ul class="wt-breadcrumb breadcrumb-style-2">
-                      <li><a href="{{route('home')}}">Home</a></li>
-                      <li><a href="{{route('allListBlog')}}">Blog</a></li>
+                      <li><a href="{{route('home')}}">{{getLanguage('home')}}</a></li>
+                      <li><a href="{{route('allListBlog')}}">{{getLanguage('blog')}}</a></li>
                       <li>{{$title_page}}</li>
                   </ul>
               </div>

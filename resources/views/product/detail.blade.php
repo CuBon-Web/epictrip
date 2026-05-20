@@ -11,6 +11,8 @@ $img = json_decode($product->images);
 $route = json_decode($product->size);
 $datetour = json_decode($product->preserve);
 $ingredient = json_decode($product->ingredient);
+$includedServices = json_decode($product->included_services);
+$excludedServices = json_decode($product->excluded_services);
 //  dd(json_decode($product->content));
 @endphp
 {{url(''.$img[0])}}
@@ -54,6 +56,11 @@ $ingredient = json_decode($product->ingredient);
 </script>
 @endsection
 @section('css')
+<style>
+.tour-excluded-list li i {
+    color: #e74c3c !important;
+}
+</style>
 @endsection
 @section('js')
 <script>
@@ -158,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
                <!-- BREADCRUMB ROW -->                            
                <div>
                    <ul class="wt-breadcrumb breadcrumb-style-2">
-                       <li><a href="{{ route('home') }}">Home</a></li>
+                       <li><a href="{{ route('home') }}">{{getLanguage('home')}}</a></li>
                        <li>{{languageName($product->name)}}</li>
                    </ul>
                </div>
@@ -269,9 +276,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                    <!-- Navigation -->
                                    <nav class="navbar-one">
-                                       <a href="#overview">Overview</a>
-                                       <a href="#itinerary">Day Wise Itinerary</a>
-                                       <a href="#TermCondition">Terms & Condition</a>
+                                       <a href="#overview">{{getLanguage('overview')}}</a>
+                                       <a href="#itinerary">{{getLanguage('itinerary')}}</a>
+                                       @php $highlightsHtml = trim(strip_tags(languageName($product->highlights))); @endphp
+                                       @if((!empty($includedServices) && count($includedServices)) || (!empty($excludedServices) && count($excludedServices)))
+                                       <a href="#services">{{getLanguage('services_tour')}}</a>
+                                       @endif
+                                       @if($highlightsHtml !== '')
+                                       <a href="#highlights">{{getLanguage('highlights')}}</a>
+                                       @endif
+                                       
                                    </nav>
 
                                    <!-- Over View-->
@@ -281,11 +295,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                            <div class="trv-man-sec-hol">
                                                <ul>
                                                    <li>
-                                                       <span class="trv-tmi-hlo"><i class="bi bi-clock"></i> Duration : </span>
-                                                       <span class="ng-binding"> {{($product->duration)}} </span>
+                                                       <span class="trv-tmi-hlo"><i class="bi bi-clock"></i> {{getLanguage('duration')}} : </span>
+                                                       <span class="ng-binding"> {{languageName($product->hang_muc)}} </span>
                                                    </li>
                                                    <li>
-                                                       <span  class="trv-tmi-hlo"><i class="bi bi-geo-alt"></i> Places to Visit :</span>
+                                                       <span  class="trv-tmi-hlo"><i class="bi bi-geo-alt"></i> {{getLanguage('places_to_visit')}} :</span>
                                                        <span class="trv-tmi-hlo-info">
                                                             @if (!empty($ingredient) && is_array($ingredient))
                                                                 @foreach ($ingredient as $key => $item)
@@ -306,10 +320,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                    </section>
 
+                                   @if($highlightsHtml !== '')
+                                   <section id="highlights" class="content">
+                                       <h3 class="trv-inner-title-sm">{{getLanguage('highlights')}}</h3>
+                                       <div class="trv-highlights-content">
+                                           {!! languageName($product->highlights) !!}
+                                       </div>
+                                   </section>
+                                   @endif
+
                                    <!-- Day Wise Itinerary-->
                                    <section id="itinerary">
 
-                                       <h3 class="trv-inner-title-sm">Day Wise Itinerary</h3>
+                                       <h3 class="trv-inner-title-sm">{{getLanguage('itinerary')}}</h3>
                                    
                                        <div class="trv-clist-st-3-wrap">
                                            <ul class="trv-list-st-3">
@@ -337,17 +360,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                    </section>
 
-                                  
-
-                                   <section id="TermCondition">
-                                     
-                                        <h4 class="trv-inner-title-sm">Term & Condition</h4>
-                                        @if($terms)
+                                   @if((!empty($includedServices) && count($includedServices)) || (!empty($excludedServices) && count($excludedServices)))
+                                   <section id="services" class="content">
+                                       <h3 class="trv-inner-title-sm">{{getLanguage('services_tour')}}</h3>
                                        <div class="trv-de-list-st1">
-                                           {!! ($terms->content) ? ($terms->content) : '' !!}
+                                           @if(!empty($includedServices) && count($includedServices))
+                                           <h4 class="trv-inner-title-sm" style="font-size: 20px; margin-bottom: 16px;">WHAT'S INCLUDED</h4>
+                                           <ul class="trv-checklist-st1">
+                                               @foreach($includedServices as $serviceItem)
+                                                   @php $includedText = trim(languageName(json_encode($serviceItem->content ?? $serviceItem))); @endphp
+                                                   @if($includedText !== '')
+                                                   <li><i class="bi bi-check-circle-fill"></i> <span>{{ $includedText }}</span></li>
+                                                   @endif
+                                               @endforeach
+                                           </ul>
+                                           @endif
+                                           @if(!empty($excludedServices) && count($excludedServices))
+                                           <h4 class="trv-inner-title-sm" style="font-size: 20px; margin: 24px 0 16px;">WHAT'S NOT INCLUDED</h4>
+                                           <ul class="trv-checklist-st2 tour-excluded-list">
+                                               @foreach($excludedServices as $serviceItem)
+                                                   @php $excludedText = trim(languageName(json_encode($serviceItem->content ?? $serviceItem))); @endphp
+                                                   @if($excludedText !== '')
+                                                   <li><i class="bi bi-x-circle-fill"></i> <span>{{ $excludedText }}</span></li>
+                                                   @endif
+                                               @endforeach
+                                           </ul>
+                                           @endif
                                        </div>
-                                       @endif
                                    </section>
+                                   @endif
 
                                </div>
 
@@ -360,9 +401,9 @@ document.addEventListener('DOMContentLoaded', function () {
                    
                        <aside  class="side-bar">
                         <div class="trv-tour-single-r-detail">
-                           <span class="trv-star-from">Price</span>
+                           <span class="trv-star-from">{{getLanguage('price')}}</span>
                            <span class="trv-star-amount">
-                               Contact Us
+                               {{getLanguage('contact_us')}}
                            </span>
                        </div>
                         <div class="twm-post-com-wrap">
@@ -375,8 +416,8 @@ document.addEventListener('DOMContentLoaded', function () {
            
                                            <!-- TITLE START-->
                                            <div class="section-head trv-head-title-wrap left-position">
-                                               <h2 class="trv-head-title"><span class="site-text-yellow">Booking</span> This Tour</h2>
-                                               <div class="trv-head-discription">You can book this tour by filling the form below</div>
+                                               <h2 class="trv-head-title">{{getLanguage('booking_this_tour')}}</h2>
+                                               <div class="trv-head-discription">{{getLanguage('booking_this_tour_des')}}</div>
                                            </div>
                                            <!-- TITLE END-->
            
@@ -387,22 +428,22 @@ document.addEventListener('DOMContentLoaded', function () {
                                            
                                             <input type="text" hidden name="total" value="0">
                                                <div class="form-group">
-                                                   <input class="form-control" type="text" placeholder="Enter Your Name" name="name" required>
+                                                   <input class="form-control" type="text" placeholder="{{getLanguage('enter_your_name')}}" name="name" required>
                                                </div>
                                                <div class="form-group">
-                                                   <input class="form-control" type="text" placeholder="Enter Email Address" name="email">
+                                                   <input class="form-control" type="text" placeholder="{{getLanguage('enter_email_address')}}" name="email">
                                                </div>
                                                <div class="form-group">
-                                                   <input class="form-control" type="text" placeholder="Enter Phone Number" name="phone" required>
+                                                   <input class="form-control" type="text" placeholder="{{getLanguage('enter_phone_number')}}" name="phone" required>
                                                </div>
                                                <div class="form-group">
                                                    <div class="row g-2">
                                                        <div class="col-6">
-                                                           <label class="form-label small m-b5">Adults</label>
+                                                           <label class="form-label small m-b5">{{getLanguage('adult')}}</label>
                                                            <input class="form-control form-control-sm" type="text" name="nguoilon" value="1">
                                                        </div>
                                                        <div class="col-6">
-                                                           <label class="form-label small m-b5">Children</label>
+                                                           <label class="form-label small m-b5">{{getLanguage('children')}}</label>
                                                            <input class="form-control form-control-sm" type="text" name="treem" value="0">
                                                        </div>
                                                    </div>
@@ -411,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                                <div class="form-group">
                                                    <textarea  class="form-control" placeholder="Message" name="note"></textarea>
                                                </div>
-                                               <button type="submit" class="site-button butn-bg-shape">Booking</button>
+                                               <button type="submit" class="site-button butn-bg-shape">{{getLanguage('booking')}}</button>
                                            </form>
                                            
            
@@ -445,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="container-fluid">
           <!-- TITLE START-->
           <div class="section-head trv-head-title-wrap center-position">
-              <h2 class="trv-head-title">You May Interested With</h2>
+              <h2 class="trv-head-title">{{getLanguage('you_may_interested_with')}}</h2>
               <div class="trv-head-title-image">
                   <img src="/frontend/images/Title-Separator.png" alt="Image">
               </div>

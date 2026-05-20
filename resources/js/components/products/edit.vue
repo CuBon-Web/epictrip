@@ -32,6 +32,14 @@
                 />
               </div>
               <div class="form-group">
+                <multi-lang-field
+                  v-model="objData.highlights"
+                  :languages="lang"
+                  type="tinymce"
+                  label="HIGHLIGHTS"
+                />
+              </div>
+              <div class="form-group">
                 <label>Ảnh sản phẩm</label>
                 <ImageMulti v-model="objData.images" :title="'san-pham'"/>
               </div>
@@ -280,6 +288,26 @@
                     </div>
                 </vs-select>
               </div>
+              <div class="form-group">
+                <label>Số ngày <small class="text-muted">(dùng cho bộ lọc thời lượng)</small></label>
+                <vs-input
+                  type="number"
+                  min="1"
+                  size="default"
+                  placeholder="VD: 15"
+                  class="w-100"
+                  v-model.number="objData.duration_days"
+                />
+              </div>
+              <div class="form-group">
+                <multi-lang-field
+                  v-model="objData.hang_muc"
+                  :languages="lang"
+                  type="text"
+                  label="Hành trình kéo dài"
+                  placeholder="VD: 15 Days / 15 Ngày"
+                />
+              </div>
              <div class="form-group">
                 <label>Thông số kỹ thuật</label>
                 <div v-for="(item, index) in objData.size" :key="index">
@@ -420,6 +448,12 @@ export default {
             content: "",
           },
         ],
+        highlights: [
+          {
+            lang_code: "en-US",
+            content: "",
+          },
+        ],
         content: [
           {
             lang_code: "en-US",
@@ -433,7 +467,13 @@ export default {
         type_two:0,
         origin: "",
         thickness: "",
-        hang_muc: "",
+        hang_muc: [
+          {
+            lang_code: "en-US",
+            content: "",
+          },
+        ],
+        duration_days: "",
         service_id:0,
         lungtung:[],
         status_variant: 0
@@ -511,8 +551,38 @@ export default {
 
       })
     },
+    parseMultilangField(value) {
+      if (!value) {
+        return [{ lang_code: "en-US", content: "" }];
+      }
+      if (Array.isArray(value)) {
+        return value;
+      }
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch (e) {}
+      return [{ lang_code: "en-US", content: value }];
+    },
+    syncDurationDays() {
+      if (this.objData.duration_days) {
+        return;
+      }
+      const items = Array.isArray(this.objData.hang_muc) ? this.objData.hang_muc : [];
+      for (const item of items) {
+        const text = (item && item.content) ? String(item.content) : "";
+        const match = text.match(/(\d+)/);
+        if (match) {
+          this.objData.duration_days = parseInt(match[1], 10);
+          return;
+        }
+      }
+    },
     saveProducts() {
       this.errors = [];
+      this.syncDurationDays();
       if(this.objData.name == '') this.errors.push('Tên không được để trống');
       if(this.objData.content[0].content == '') this.errors.push('Nội dung không được để trống');
       if(this.objData.description[0].content == '') this.errors.push('Mô tả không được để trống');
@@ -554,6 +624,9 @@ export default {
           this.objData.images = JSON.parse(response.data.images);
           this.objData.content = JSON.parse(response.data.content);
           this.objData.description = JSON.parse(response.data.description);
+          this.objData.highlights = response.data.highlights
+            ? JSON.parse(response.data.highlights)
+            : [{ lang_code: "en-US", content: "" }];
           this.objData.tags = JSON.parse(response.data.tags);
           if(response.data.ingredient == ""){
             this.objData.ingredient = [{title: "",detail: ""}]
@@ -570,6 +643,8 @@ export default {
           }else{
             this.objData.preserve = JSON.parse(response.data.preserve);
           }
+          this.objData.hang_muc = this.parseMultilangField(response.data.hang_muc);
+          this.objData.duration_days = response.data.duration_days || "";
       }).catch(error => {
         console.log(12);
       });

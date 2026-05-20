@@ -23,7 +23,7 @@ FAG | {{$setting->webname}}
               <!-- BREADCRUMB ROW -->                            
               <div>
                   <ul class="wt-breadcrumb breadcrumb-style-2">
-                      <li><a href="{{route('home')}}">{{getLanguage('welcome')}}</a></li>
+                      <li><a href="{{route('home')}}">{{getLanguage('home')}}</a></li>
                       <li>{{getLanguage('faq')}}</li>
                   </ul>
               </div>

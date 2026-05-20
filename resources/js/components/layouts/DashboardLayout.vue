@@ -213,6 +213,10 @@ export default {
               path: "/founder",
             },
             {
+              name: "Why travel with",
+              path: "/why-travel-with",
+            },
+            {
               name: "Quản lý đối tác",
               path: "/partner",
             },

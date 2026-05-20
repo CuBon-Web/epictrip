@@ -51,6 +51,48 @@ class Product extends Model
         return $value ?? '';
     }
 
+    private function resolveDurationDays($request)
+    {
+        $days = (int) ($request->duration_days ?? 0);
+        if ($days > 0) {
+            return $days;
+        }
+
+        return $this->extractDaysFromMultilang($request->hang_muc);
+    }
+
+    private function extractDaysFromMultilang($value)
+    {
+        $contents = [];
+
+        if (is_array($value)) {
+            foreach ($value as $row) {
+                if (!empty($row['content'])) {
+                    $contents[] = $row['content'];
+                }
+            }
+        } elseif (is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                foreach ($decoded as $row) {
+                    if (!empty($row['content'])) {
+                        $contents[] = $row['content'];
+                    }
+                }
+            } else {
+                $contents[] = $value;
+            }
+        }
+
+        foreach ($contents as $text) {
+            if (preg_match('/(\d+)/', (string) $text, $matches)) {
+                return (int) $matches[1];
+            }
+        }
+
+        return 0;
+    }
+
     public function rule()
     {
         return [
@@ -91,6 +133,7 @@ class Product extends Model
                     $query->discount = json_encode($request->discount);
                     $query->images = json_encode($request->images);
                     $query->description = json_encode($request->description);
+                    $query->highlights = json_encode($request->highlights ?? []);
                     $query->content = json_encode($request->content);
                     $query->size = json_encode($request->size);
                     $query->variant = json_encode($request->variant);
@@ -103,12 +146,15 @@ class Product extends Model
                     $query->type_slug = $typecat ? $typecat->slug : '';
                     $query->type_two_slug = $typetwo ? $typetwo->slug : '';
                     $query->ingredient = json_encode($request->ingredient);
+                    $query->included_services = json_encode($request->included_services ?? []);
+                    $query->excluded_services = json_encode($request->excluded_services ?? []);
                     $query->type_cate = $request->type_cate;
                     // $query->species = json_encode($request->species);
                     $query->origin = $request->origin;
                     $query->thickness = $request->thickness;
                     $query->status_variant = $request->status_variant;
-                    $query->hang_muc = $request->hang_muc;
+                    $query->hang_muc = $this->normalizeMultilang($request->hang_muc);
+                    $query->duration_days = $this->resolveDurationDays($request);
                     $query->status = $request->status;
                     $query->discountStatus = $request->discountStatus;
                     $query->home_status = $request->home_status;
@@ -139,6 +185,7 @@ class Product extends Model
                 $query->discount = json_encode($request->discount);
                 $query->images = json_encode($request->images);
                 $query->description = json_encode($request->description);
+                $query->highlights = json_encode($request->highlights ?? []);
                 $query->content = json_encode($request->content);
                 $query->size = json_encode($request->size);
                 $query->category = $request->category;
@@ -151,12 +198,15 @@ class Product extends Model
                 $query->type_slug = $typecat ? $typecat->slug : '';
                 $query->type_two_slug = $typetwo ? $typetwo->slug : '';
                 $query->ingredient = json_encode($request->ingredient);
+                $query->included_services = json_encode($request->included_services ?? []);
+                $query->excluded_services = json_encode($request->excluded_services ?? []);
                 $query->type_cate = $request->type_cate;
                 $query->species = json_encode($request->species);
                 $query->origin = $request->origin;
                 $query->thickness = $request->thickness;
                 $query->status_variant = $request->status_variant;
-                $query->hang_muc = $request->hang_muc;
+                $query->hang_muc = $this->normalizeMultilang($request->hang_muc);
+                $query->duration_days = $this->resolveDurationDays($request);
                 $query->status = $request->status;
                 $query->discountStatus = $request->discountStatus;
                 $query->home_status = $request->home_status;

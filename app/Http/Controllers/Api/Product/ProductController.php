@@ -21,7 +21,7 @@ class ProductController extends Controller
     }
     public function listTags()
     {
-        $data = TagCate::with(['tags'])->get();
+        $data = TagCate::with(['tags'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
         return response()->json([
             'data' => $data,
             'message' => 'success'

@@ -11,7 +11,7 @@
                         <a href="{{ route('detailProduct', ['cate' => $item->cate_slug, 'type' => $item->type_slug ? $item->type_slug : 'type', 'id' => $item->slug]) }}"><img src="{{ $thumb }}" alt="{{ languageName($item->name) }}"></a>
                         <div class="trv-tour-duration">
                             <i class="bi bi-calendar2-week"></i>
-                            <span>{{ $item->hang_muc }}</span>
+                            <span>{{ languageName($item->hang_muc) }}</span>
                         </div>
                         <div class="trv-tour-title">
                             <h3 class="trv-title">

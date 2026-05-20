@@ -217,6 +217,14 @@ let _routers = [
                 }
             },
             {
+                name: 'why-travel-with',
+                path: '/why-travel-with',
+                component: _import('website/whyTravelWith'),
+                meta: {
+                    requiresAuth: true,
+                }
+            },
+            {
                 name: 'partner',
                 path: '/partner',
                 component: _import('website/partner'),

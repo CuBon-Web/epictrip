@@ -154,7 +154,7 @@ Hoàn Tất Đặt Tour
 
              <div class="">
                <div class="text-15">Total length of stay:</div>
-               <div class="fw-500">{{$tour->hang_muc}}</div>
+               <div class="fw-500">{{ languageName($tour->hang_muc) }}</div>
              </div>
 
 

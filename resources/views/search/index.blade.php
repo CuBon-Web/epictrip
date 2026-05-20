@@ -22,10 +22,10 @@
         <div class="trv-tr-pack-bnr-wrap" style="background-image: url({{ $bannerImage }});">
             <div class="container">
                 <div class="trv-search-st5">
-                    <h3 class="trv-search-st5-title">Tìm kiếm</h3>
+                    <h3 class="trv-search-st5-title">{{getLanguage('search')}}</h3>
                     <ul class="wt-breadcrumb breadcrumb-style-2">
-                        <li><a class="text-white" href="{{ route('home') }}">Home</a></li>
-                        <li class="text-white">Tìm kiếm</li>
+                        <li><a class="text-white" href="{{ route('home') }}">{{getLanguage('home')}}</a></li>
+                        <li class="text-white">{{getLanguage('search')}}</li>
                     </ul>
                 </div>
             </div>
@@ -36,9 +36,9 @@
                 <form method="get" action="{{ route('globalSearch') }}" class="m-b30" role="search">
                     <div class="input-group radius-xl" style="max-width: 640px;">
                         <input class="form-control" name="q" type="search" value="{{ $keyword }}"
-                            placeholder="Từ khóa tour hoặc tin tức...">
+                            placeholder="{{getLanguage('enter_keyword_tour_or_blog')}}">
                         <span class="input-group-append">
-                            <button type="submit" class="site-button">Tìm kiếm</button>
+                            <button type="submit" class="site-button">{{getLanguage('search')}}</button>
                         </span>
                     </div>
                 </form>

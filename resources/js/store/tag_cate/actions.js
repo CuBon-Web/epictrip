@@ -41,6 +41,16 @@ export const saveTagCate = ({commit},opt) => {
         })
     });
 };
+export const sortTagCate = ({commit}, opt) => {
+    return new Promise((resolve, reject) => {
+        HTTP.post('/api/tag/category/sort', opt).then(response => {
+            return resolve(response.data);
+        }).catch(error => {
+            return reject(error);
+        })
+    });
+};
+
 export const findTagCate = ({commit},opt) => {
     return new Promise((resolve, reject) => {
         HTTP.get('/api/tag/category/findCateType/'+ opt).then(response => {

@@ -22,7 +22,7 @@ class ServiceCate extends Model
                 $query->name = json_encode($request->name);
                 $query->slug = to_slug($request->name[0]['content']);
                 $query->content = json_encode($request->content);
-                $query->description = $request->description;
+                $query->description = json_encode($request->description);
                 $query->status = $request->status;
                 $query->image = $request->image;
                 $query->save();
@@ -31,7 +31,7 @@ class ServiceCate extends Model
                 $query->name = json_encode($request->name);
                 $query->slug = to_slug($request->name[0]['content']);
                 $query->content = json_encode($request->content);
-                $query->description = $request->description;
+                $query->description = json_encode($request->description);
                 $query->status = $request->status;
                 $query->image = $request->image;
                 $query->save();
@@ -42,7 +42,7 @@ class ServiceCate extends Model
             $query->name = json_encode($request->name);
             $query->slug = to_slug($request->name[0]['content']);
             $query->content = json_encode($request->content);
-            $query->description = $request->description;
+            $query->description = json_encode($request->description);
             $query->status = $request->status;
             $query->image = $request->image;
             $query->save();

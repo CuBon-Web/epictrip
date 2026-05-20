@@ -23,7 +23,7 @@ About {{$setting->company}}
 				<!-- BREADCRUMB ROW -->                            
 				<div>
 					<ul class="wt-breadcrumb breadcrumb-style-2">
-						<li><a href="{{route('home')}}">{{getLanguage('welcome')}}</a></li>
+						<li><a href="{{route('home')}}">{{getLanguage('home')}}</a></li>
 						<li>{{getLanguage('about')}}</li>
 					</ul>
 				</div>
@@ -80,9 +80,9 @@ About {{$setting->company}}
 									<img src="{{$item->image}}" alt="image">
 								</div>
 								<h3 class="trv-guide-name">
-									<a href="#"> {{$item->name}}</a>
+									<a href="#">{{ languageName($item->name) }}</a>
 								</h3>
-								<span>{{$item->position ?? 'Tourist Guide'}}</span>
+								<span>{{ languageName($item->position) ?: 'Tourist Guide' }}</span>
 							</div>
 						</div>
 						@endforeach

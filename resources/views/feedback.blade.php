@@ -23,7 +23,7 @@ Feedback | {{$setting->webname}}
               <!-- BREADCRUMB ROW -->                            
               <div>
                   <ul class="wt-breadcrumb breadcrumb-style-2">
-                      <li><a href="{{route('home')}}">Home</a></li>
+                      <li><a href="{{route('home')}}">{{getLanguage('home')}}</a></li>
                       <li>Testimonial</li>
                   </ul>
               </div>

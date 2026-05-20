@@ -149,11 +149,13 @@ Route::group(['namespace'=>'Api','middleware'=>'auth:api'],function(){
 	Route::group(['prefix'=>'tag', 'namespace'=>'Tag'], function(){
 		Route::post('add','TagController@add');
 		Route::post('list','TagController@list');
+		Route::post('sort','TagController@sort');
 		Route::get('edit/{id}','TagController@edit');
 		Route::get('delete/{id}','TagController@delete');
 		Route::group(['prefix'=>'category'], function(){
 			Route::post('add','TagCateController@add');
 			Route::post('list','TagCateController@list');
+			Route::post('sort','TagCateController@sort');
 			Route::get('delete/{id}','TagCateController@delete');
 			Route::get('edit/{id}','TagCateController@edit');
 		});
@@ -207,6 +209,8 @@ Route::group(['namespace'=>'Api','middleware'=>'auth:api'],function(){
 		Route::post('save-setting','SettingController@postsetting');
 		Route::post('founder','FounderController@createOrUpdate');
 		Route::get('list-founder','FounderController@list');
+		Route::post('why-travel-with','WhyTravelWithController@createOrUpdate');
+		Route::get('list-why-travel-with','WhyTravelWithController@list');
 		Route::post('video','VideoController@createOrUpdateVideo');
 		Route::get('list-video','VideoController@listVideo');
 		Route::post('albumaffter','AlbumAffterController@createOrUpdateAlbumAffter');

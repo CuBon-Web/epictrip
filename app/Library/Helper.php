@@ -48,29 +48,29 @@ if (!function_exists('getConfig')) {
     }
 }
 
+if (!function_exists('localeLangCode')) {
+    function localeLangCode()
+    {
+        $default = config('app.locale', 'es-ES');
+
+        if (!Session::has('localelang')) {
+            Session::put('localelang', $default);
+        }
+
+        return Session::get('localelang', $default);
+    }
+}
 if (!function_exists('getLanguage')) {
     function getLanguage($key)
     {
-        $session =  session()->get('localelang');
-        if($session != null){
-            $code = session()->get('localelang');
-        }else{
-            session()->put('localelang', app()->getLocale());
-        }
-        $code = session()->get('localelang');
+        $code = localeLangCode();
         $lang = new \App\models\frontend\LanguageStaticByLang();
         return $lang->getLanguageValue($key, $code);
     }
 }
 if(!function_exists('toArrayLanguage')){
     function toArrayLanguage($value){
-        $session =  Session::get('localelang');
-        if($session != null){
-            $code = Session::get('localelang');
-        }else{
-            Session::put('localelang', app()->getLocale());
-        }
-        $code = Session::get('localelang');
+        $code = localeLangCode();
         $arr = [];
         $obj = new stdClass();
         $obj->lang_code = $code;
@@ -79,6 +79,13 @@ if(!function_exists('toArrayLanguage')){
         return json_encode($arr);
     }
 }
+if (!function_exists('productDurationExpr')) {
+    function productDurationExpr()
+    {
+        return 'COALESCE(NULLIF(duration_days, 0), CAST(hang_muc AS UNSIGNED))';
+    }
+}
+
 if(!function_exists('languageName')){
     function languageName($arrName){
         if (is_null($arrName) || $arrName === '') {
@@ -98,13 +105,7 @@ if(!function_exists('languageName')){
         if (!is_iterable($arr)) {
             return $arrName;
         }
-        $session =  Session::get('localelang');
-        if($session != null){
-            $code = Session::get('localelang');
-        }else{
-            Session::put('localelang', app()->getLocale());
-        }
-        $code = Session::get('localelang');
+        $code = localeLangCode();
         foreach($arr as $item){
             if(isset($item->lang_code) && $item->lang_code == $code){
                 return $item->content;

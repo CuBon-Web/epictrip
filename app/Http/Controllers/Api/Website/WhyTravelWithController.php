@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
+use App\models\website\WhyTravelWith;
 use Illuminate\Http\Request;
-use App\models\website\Founder;
 
-class FounderController extends Controller
+class WhyTravelWithController extends Controller
 {
     private function encodeMultilang($value)
     {
@@ -32,31 +32,34 @@ class FounderController extends Controller
 
     public function createOrUpdate(Request $request)
     {
-    	if($request->data){
-    		Founder::truncate();
+        $items = $request->data ?? $request->items;
 
-	    	foreach ($request->data as $key => $value) {
-	    		Founder::updateOrCreate(
-				    [
-                        'image' => $value['image'],
-				        'status' =>$value['status'],
-                        'name' => $this->encodeMultilang($value['name'] ?? ''),
-                        'description' => $this->encodeMultilang($value['description'] ?? ''),
-                        'position' => $this->encodeMultilang($value['position'] ?? '')
-				 	]
-				);
-	    	}
-    	}
-    	return response()->json([
-            'messenge' => 'success'
-        ],200);
+        if ($items) {
+            WhyTravelWith::truncate();
+
+            foreach ($items as $key => $value) {
+                WhyTravelWith::create([
+                    'image' => $value['image'] ?? '',
+                    'status' => $value['status'] ?? 1,
+                    'sort_order' => $value['sort_order'] ?? $key,
+                    'title' => $this->encodeMultilang($value['title'] ?? ''),
+                    'description' => $this->encodeMultilang($value['description'] ?? ''),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'messenge' => 'success',
+        ], 200);
     }
+
     public function list()
     {
-    	$data = Founder::get();
-    	return response()->json([
+        $data = WhyTravelWith::orderBy('sort_order')->orderBy('id')->get();
+
+        return response()->json([
             'messenge' => 'success',
-            'data' => $data
-        ],200);
+            'data' => $data,
+        ], 200);
     }
 }

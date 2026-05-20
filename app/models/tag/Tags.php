@@ -9,9 +9,7 @@ use App\models\product\Category;
 class Tags extends Model
 {
     protected $table = "tags";
-    public function FunctionName() : Returntype {
-        
-    }
+
     public function cateTag()
     {
         return $this->hasOne(TagCate::class,'id','cate_tag_id');
@@ -44,6 +42,9 @@ class Tags extends Model
         $query->status = $request->status;
         $query->image = $request->image;
         $query->content = $this->normalizeMultilang($request->content);
+        if ($id == "") {
+            $query->sort_order = (int) Tags::max('sort_order') + 1;
+        }
         $query->save();
 
         return $query;

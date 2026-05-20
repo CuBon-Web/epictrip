@@ -11,6 +11,7 @@ use App\models\blog\BlogCategory;
 use App\models\BannerAds;
 use App\models\website\Video;
 use App\models\website\Founder;
+use App\models\website\WhyTravelWith;
 use App\models\website\Prize;
 use App\models\website\AlbumAffter;
 use App\models\ReviewCus;
@@ -26,11 +27,15 @@ class HomeController extends Controller
         ])->orderBy('id','DESC')->limit(6)->get(['id','title','slug','created_at','image','description']);
         $data['ReviewCus'] = ReviewCus::where('status',1)->get();
        
-        $data['filter'] = TagCate::with(['tags'])->get();
+        $data['filter'] = TagCate::with(['tags'])->orderBy('sort_order','ASC')->orderBy('id','ASC')->get();
         $data['partner'] = Partner::where(['status'=>1])->get();
         $data['bannerads'] = BannerAds::where(['status_show'=>'banner_ads','status'=>1])->get();
         $data['whychoise'] = BannerAds::where(['status_show'=>'banner_slogan','status'=>1])->get();
         $data['founder'] = Founder::where(['status'=>1])->get();
+        $data['whyTravelWith'] = WhyTravelWith::where('status', 1)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
         $data['gioithieu'] = PageContent::where(['slug'=>'gioi-thieu','language'=>'vi'])->first(['id','title','content','image']);
         $data['homePro'] = Product::where(['status'=>1,'discountStatus'=>1])
             ->orderBy('id','DESC')
