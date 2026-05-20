@@ -107,7 +107,6 @@ if(!function_exists('languageName')){
         }
         
         $code = localeLangCode();
-        dd($code);
         foreach($arr as $item){
             if(isset($item->lang_code) && $item->lang_code == $code){
                 return $item->content;
