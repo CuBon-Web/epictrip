@@ -240,8 +240,8 @@
                     placeholder="--Chọn--"
                     >
                     <div :key="index" v-for="item,index in tags">
-                      <vs-select-group :title="item.name" v-if="item.tags">
-                        <vs-select-item :key="index" :value="i.slug" :text="i.name" v-for="i,index in item.tags"/>
+                      <vs-select-group :title="languageName(item.name)" v-if="item.tags">
+                        <vs-select-item :key="index" :value="i.slug" :text="languageName(i.name)" v-for="i,index in item.tags"/>
                       </vs-select-group>
                     </div>
                 </vs-select>
@@ -638,6 +638,23 @@ export default {
         objOtion.option_values.push(obj);
         
       return objOtion;
+    },
+    languageName(value) {
+      if (Array.isArray(value)) {
+        const preferred = value.find(
+          (item) => item.lang_code === "es-ES" && (item.content || "").trim() !== ""
+        );
+        if (preferred) return preferred.content;
+        const first = value.find((item) => (item.content || "").trim() !== "");
+        return first ? first.content : "";
+      }
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+          return this.languageName(parsed);
+        }
+      } catch (e) {}
+      return value || "";
     },
     syncTagCateFromSelectedTags() {
       const selectedTags = Array.isArray(this.objData.tags) ? this.objData.tags : [];

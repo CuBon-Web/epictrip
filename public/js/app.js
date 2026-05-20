@@ -17802,6 +17802,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       })["catch"](function (error) {});
     },
+    languageName: function languageName(value) {
+      if (Array.isArray(value)) {
+        var preferred = value.find(function (item) {
+          return item.lang_code === "es-ES" && (item.content || "").trim() !== "";
+        });
+        if (preferred) return preferred.content;
+        var first = value.find(function (item) {
+          return (item.content || "").trim() !== "";
+        });
+        return first ? first.content : "";
+      }
+
+      try {
+        var parsed = JSON.parse(value);
+
+        if (Array.isArray(parsed)) {
+          return this.languageName(parsed);
+        }
+      } catch (e) {}
+
+      return value || "";
+    },
     syncTagCateFromSelectedTags: function syncTagCateFromSelectedTags() {
       var selectedTags = Array.isArray(this.objData.tags) ? this.objData.tags : [];
 
@@ -18611,6 +18633,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this3.variant_value.push(obj);
         }
       })["catch"](function (error) {});
+    },
+    languageName: function languageName(value) {
+      if (Array.isArray(value)) {
+        var preferred = value.find(function (item) {
+          return item.lang_code === "es-ES" && (item.content || "").trim() !== "";
+        });
+        if (preferred) return preferred.content;
+        var first = value.find(function (item) {
+          return (item.content || "").trim() !== "";
+        });
+        return first ? first.content : "";
+      }
+
+      try {
+        var parsed = JSON.parse(value);
+
+        if (Array.isArray(parsed)) {
+          return this.languageName(parsed);
+        }
+      } catch (e) {}
+
+      return value || "";
     },
     parseMultilangField: function parseMultilangField(value) {
       if (!value) {
@@ -19656,6 +19700,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       obj.label = variant_value;
       objOtion.option_values.push(obj);
       return objOtion;
+    },
+    languageName: function languageName(value) {
+      if (Array.isArray(value)) {
+        var preferred = value.find(function (item) {
+          return item.lang_code === "es-ES" && (item.content || "").trim() !== "";
+        });
+        if (preferred) return preferred.content;
+        var first = value.find(function (item) {
+          return (item.content || "").trim() !== "";
+        });
+        return first ? first.content : "";
+      }
+
+      try {
+        var parsed = JSON.parse(value);
+
+        if (Array.isArray(parsed)) {
+          return this.languageName(parsed);
+        }
+      } catch (e) {}
+
+      return value || "";
     },
     syncTagCateFromSelectedTags: function syncTagCateFromSelectedTags() {
       var selectedTags = Array.isArray(this.objData.tags) ? this.objData.tags : [];
@@ -330123,11 +330189,14 @@ var render = function() {
                         item.tags
                           ? _c(
                               "vs-select-group",
-                              { attrs: { title: item.name } },
+                              { attrs: { title: _vm.languageName(item.name) } },
                               _vm._l(item.tags, function(i, index) {
                                 return _c("vs-select-item", {
                                   key: index,
-                                  attrs: { value: i.slug, text: i.name }
+                                  attrs: {
+                                    value: i.slug,
+                                    text: _vm.languageName(i.name)
+                                  }
                                 })
                               }),
                               1
@@ -331192,13 +331261,13 @@ var render = function() {
                         item.tags
                           ? _c(
                               "vs-select-group",
-                              { attrs: { title: item.name } },
+                              { attrs: { title: _vm.languageName(item.name) } },
                               _vm._l(item.tags, function(i, index) {
                                 return _c("vs-select-item", {
                                   key: index,
                                   attrs: {
                                     value: i.slug + "-" + item.slug,
-                                    text: i.name
+                                    text: _vm.languageName(i.name)
                                   }
                                 })
                               }),
@@ -332319,11 +332388,14 @@ var render = function() {
                         item.tags
                           ? _c(
                               "vs-select-group",
-                              { attrs: { title: item.name } },
+                              { attrs: { title: _vm.languageName(item.name) } },
                               _vm._l(item.tags, function(i, index) {
                                 return _c("vs-select-item", {
                                   key: index,
-                                  attrs: { value: i.slug, text: i.name }
+                                  attrs: {
+                                    value: i.slug,
+                                    text: _vm.languageName(i.name)
+                                  }
                                 })
                               }),
                               1
