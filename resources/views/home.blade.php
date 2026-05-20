@@ -904,8 +904,8 @@
         <div class="container">
             <!-- TITLE START-->
             <div class="section-head trv-head-title-wrap center-position">
-                <h2 class="trv-head-title">Why Travel With EPIC TRIP TRAVEL</h2>
-                <div class="trv-head-discription">Discover the unrivalled benefits that promise memorable journeys all along.</div>
+                <h2 class="trv-head-title">{{getLanguage('why_travel_with')}}</h2>
+                <div class="trv-head-discription">{{getLanguage('why_travel_with_description')}}</div>
                 <div class="trv-head-title-image">
                     <img loading="lazy" src="/frontend/images/Title-Separator.png" alt="Image">
                 </div>
